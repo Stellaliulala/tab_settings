@@ -5,878 +5,461 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>系統設定｜Echoss VIP</title>
 <style>
-/* ── Reset & Base ────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --brand: #27AE60; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', sans-serif;
-  background: #F7F7F7;
-  color: #222;
-  font-size: 14px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+  background: #F7F7F7; color: #222; font-size: 14px;
+  min-height: 100vh; display: flex; flex-direction: column;
 }
 
-/* ── Top bar ─────────────────────────────────────────────────────── */
+/* ── Topbar ── */
 .topbar {
-  height: 52px;
-  background: #fff;
-  border-bottom: 1px solid #E8E8E8;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  gap: 12px;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  height: 52px; background: #fff; border-bottom: 1px solid #E8E8E8;
+  display: flex; align-items: center; padding: 0 20px; gap: 12px;
+  flex-shrink: 0; position: sticky; top: 0; z-index: 200;
 }
-.topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 15px;
-  color: #222;
-}
-.topbar-brand-dot {
-  width: 28px; height: 28px;
-  background: #27AE60;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 13px; font-weight: 800;
-}
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+.brand-dot { width: 28px; height: 28px; background: #27AE60; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 800; }
 .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.lang-select {
-  border: 1px solid #DDD;
-  border-radius: 6px;
-  padding: 5px 10px;
-  font-size: 12px;
-  color: #555;
-  background: #fff;
-  cursor: pointer;
-  outline: none;
-  font-family: inherit;
-}
-.avatar {
-  width: 30px; height: 30px;
-  background: #27AE60;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 13px; font-weight: 700;
-}
+.lang-sel { border: 1px solid #DDD; border-radius: 6px; padding: 5px 10px; font-size: 12px; color: #555; background: #fff; cursor: pointer; outline: none; font-family: inherit; }
+.avatar { width: 30px; height: 30px; background: #27AE60; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 700; }
 
-/* ── App layout ──────────────────────────────────────────────────── */
+/* ── App body ── */
 .app-body { display: flex; flex: 1; min-height: 0; }
 
-/* ── Sidebar ─────────────────────────────────────────────────────── */
-.sidebar {
-  width: 180px;
-  background: #fff;
-  border-right: 1px solid #EBEBEB;
-  padding: 16px 0;
-  flex-shrink: 0;
-  overflow-y: auto;
-}
-.sidebar-toggle {
-  position: absolute;
-  top: 66px;
-  left: 168px;
-  width: 20px; height: 36px;
-  background: #fff;
-  border: 1px solid #E8E8E8;
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; color: #AAA;
-  z-index: 10;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 16px;
-  font-size: 13px;
-  color: #555;
-  cursor: pointer;
-  transition: background 0.12s;
-  border-radius: 0;
-  white-space: nowrap;
-}
+/* ── Sidebar ── */
+.sidebar { width: 180px; background: #fff; border-right: 1px solid #EBEBEB; padding: 16px 0; flex-shrink: 0; }
+.nav-item { display: flex; align-items: center; gap: 8px; padding: 9px 16px; font-size: 13px; color: #555; cursor: pointer; transition: background 0.12s; }
 .nav-item:hover { background: #F5F5F5; }
 .nav-item.active { color: #27AE60; background: #F0FBF4; font-weight: 600; }
-.nav-icon { font-size: 14px; flex-shrink: 0; opacity: 0.7; }
-.nav-item.active .nav-icon { opacity: 1; }
 
-/* ── Main content ────────────────────────────────────────────────── */
-.main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 32px;
-}
-.page-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 20px;
-}
+/* ── Main ── */
+.main { flex: 1; overflow-y: auto; padding: 28px 32px; }
+.page-title { font-size: 18px; font-weight: 700; color: #222; margin-bottom: 20px; }
 
-/* ── Sub-tabs ────────────────────────────────────────────────────── */
-.subtabs {
-  display: flex;
-  border-bottom: 2px solid #EBEBEB;
-  margin-bottom: 28px;
-  gap: 0;
-}
-.subtab {
-  padding: 9px 18px;
-  font-size: 13px;
-  color: #888;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: color 0.15s, border-color 0.15s;
-  font-weight: 500;
-}
+/* ── Subtabs ── */
+.subtabs { display: flex; border-bottom: 2px solid #EBEBEB; margin-bottom: 28px; }
+.subtab { padding: 9px 18px; font-size: 13px; color: #888; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; font-weight: 500; }
 .subtab:hover { color: #444; }
 .subtab.active { color: #27AE60; border-bottom-color: #27AE60; font-weight: 600; }
 
-/* ── Tab content panels ──────────────────────────────────────────── */
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
 
-/* ── Two-col layout for 配色與選單 ───────────────────────────────── */
-.settings-cols {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 24px;
-  align-items: start;
-}
+/* ── Two-col layout ── */
+.cols { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
 
-/* ── Cards ───────────────────────────────────────────────────────── */
-.card {
-  background: #fff;
-  border: 1px solid #EBEBEB;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
+/* ── Cards ── */
+.card { background: #fff; border: 1px solid #EBEBEB; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
 .card:last-child { margin-bottom: 0; }
-.card-header {
-  padding: 14px 18px 12px;
-  border-bottom: 1px solid #F2F2F2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.card-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.card-hint { font-size: 11px; color: #BBB; }
+.card-header { padding: 14px 18px 12px; border-bottom: 1px solid #F2F2F2; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 13px; font-weight: 700; color: #333; }
+.card-hint { font-size: 11px; color: #AAA; }
 .card-body { padding: 16px 18px; }
 
-/* ── Color picker section ────────────────────────────────────────── */
-.color-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-.color-picker-wrap {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.color-spectrum {
-  width: 160px; height: 120px;
-  border-radius: 6px;
-  position: relative;
-  cursor: crosshair;
-  overflow: hidden;
-  flex-shrink: 0;
-}
+/* ── Color picker ── */
+.color-row { display: flex; align-items: flex-start; gap: 20px; }
+.color-picker-wrap { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.color-spectrum { width: 160px; height: 120px; border-radius: 6px; position: relative; cursor: crosshair; overflow: hidden; }
 .color-spectrum canvas { display: block; width: 100%; height: 100%; }
-.hue-slider-wrap { width: 160px; }
-.hue-slider {
-  -webkit-appearance: none;
-  width: 100%; height: 12px;
-  border-radius: 6px;
-  outline: none;
-  cursor: pointer;
-  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
-}
-.hue-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid #555;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-.color-hex-row {
-  display: flex; align-items: center; gap: 8px; width: 160px;
-}
-.color-preview-swatch {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: 2px solid #E0E0E0;
-  flex-shrink: 0;
-}
-.color-hex-input {
-  flex: 1;
-  border: 1px solid #DDD;
-  border-radius: 6px;
-  padding: 6px 8px;
-  font-size: 12px;
-  font-family: 'SF Mono', 'Consolas', monospace;
-  color: #333;
-  background: #FAFAFA;
-  outline: none;
-}
+.hue-slider { -webkit-appearance: none; width: 160px; height: 12px; border-radius: 6px; outline: none; cursor: pointer; background: linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00); }
+.hue-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 2px solid #555; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.color-hex-row { display: flex; align-items: center; gap: 8px; width: 160px; }
+.color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #E0E0E0; flex-shrink: 0; }
+.color-hex-input { flex: 1; border: 1px solid #DDD; border-radius: 6px; padding: 6px 8px; font-size: 12px; font-family: 'SF Mono','Consolas',monospace; color: #333; background: #FAFAFA; outline: none; }
 .color-hex-input:focus { border-color: #27AE60; background: #fff; }
-.color-desc {
-  font-size: 12px;
-  color: #888;
-  line-height: 1.6;
-  padding-top: 4px;
-}
+.color-desc { font-size: 12px; color: #888; line-height: 1.6; padding-top: 4px; }
 
-/* ── Instruction list ────────────────────────────────────────────── */
-.instr-list { list-style: none; padding: 0; }
-.instr-list li {
-  font-size: 12px;
-  color: #666;
-  padding: 5px 0;
-  border-bottom: 1px dashed #F0F0F0;
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  line-height: 1.5;
-}
+/* ── Instruction list ── */
+.instr-list { list-style: none; margin-bottom: 14px; }
+.instr-list li { font-size: 12px; color: #666; padding: 4px 0; border-bottom: 1px dashed #F0F0F0; display: flex; align-items: flex-start; gap: 7px; line-height: 1.5; }
 .instr-list li:last-child { border-bottom: none; }
-.instr-list li::before {
-  content: attr(data-marker);
-  flex-shrink: 0;
-  color: #27AE60;
-  font-size: 13px;
-  line-height: 1.4;
-}
+.instr-list li::before { content: attr(data-marker); flex-shrink: 0; color: #27AE60; font-size: 13px; line-height: 1.4; }
 
-/* ── Tab management ──────────────────────────────────────────────── */
-.section-divider {
-  font-size: 11px;
-  font-weight: 700;
-  color: #AAA;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 6px 0 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-divider::after { content: ''; flex: 1; height: 1px; background: #F0F0F0; }
+/* ── Section label ── */
+.sec-label { font-size: 11px; font-weight: 700; color: #AAA; letter-spacing: .08em; text-transform: uppercase; padding: 8px 0 6px; display: flex; align-items: center; gap: 8px; }
+.sec-label::after { content: ''; flex: 1; height: 1px; background: #F0F0F0; }
 
+/* ── Tab row ── */
+.tab-row-wrap { margin-bottom: 6px; }
 .tab-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 10px;
-  border: 1px solid #EBEBEB;
-  border-radius: 8px;
-  margin-bottom: 6px;
-  background: #fff;
-  transition: box-shadow 0.12s;
-  cursor: default;
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px; border: 1px solid #EBEBEB; border-radius: 8px;
+  background: #fff; transition: box-shadow 0.12s; cursor: default;
 }
-.tab-row:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
-.tab-row.selected { border-color: #27AE60; background: #F5FBF7; box-shadow: 0 0 0 2px rgba(39,174,96,0.12); }
-.tab-row.tab-disabled { opacity: 0.45; background: #FAFAFA; }
+.tab-row:hover { box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.tab-row.is-open { border-color: #27AE60; border-radius: 8px 8px 0 0; border-bottom-color: transparent; background: #F5FBF7; }
+.tab-row.tab-off { opacity: .45; background: #FAFAFA; }
 .tab-row.tab-custom { border-style: dashed; }
+.tab-row.tab-custom.is-open { border-style: solid; }
 
-.drag-handle {
-  color: #CCC; font-size: 14px; cursor: grab; user-select: none; flex-shrink: 0;
-  line-height: 1;
-}
-.tab-icon-box {
-  width: 30px; height: 30px;
-  border-radius: 6px;
-  background: #F4F4F4;
-  border: 1px solid #E8E8E8;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; color: #444; overflow: hidden;
-}
+.drag-handle { color: #CCC; font-size: 14px; cursor: grab; user-select: none; flex-shrink: 0; line-height: 1; }
+.tab-icon-box { width: 30px; height: 30px; border-radius: 6px; background: #F4F4F4; border: 1px solid #E8E8E8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #444; overflow: hidden; }
 .tab-icon-box svg { width: 16px; height: 16px; }
 .tab-icon-box img { width: 30px; height: 30px; object-fit: cover; }
+.tab-name-col { flex: 1; min-width: 0; }
+.tab-name { font-size: 13px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-sub { font-size: 10px; color: #BBB; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-badges { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
 
-.tab-name {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.tab-url-hint {
-  font-size: 10px;
-  color: #BBB;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 120px;
-}
-
-.badge {
-  font-size: 9px;
-  padding: 1px 6px;
-  border-radius: 10px;
-  font-weight: 700;
-  flex-shrink: 0;
-  letter-spacing: 0.02em;
-}
+.badge { font-size: 9px; padding: 1px 6px; border-radius: 10px; font-weight: 700; flex-shrink: 0; }
 .badge-sys { background: #F0F0F0; color: #999; }
 .badge-custom { background: #EBF9F1; color: #27AE60; }
 .badge-ext { background: #FFF4E6; color: #E67E22; }
 .badge-off { background: #F5F5F5; color: #BBB; }
 
-.toggle {
-  width: 32px; height: 18px;
-  background: #E0E0E0;
-  border-radius: 18px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.18s;
-  border: none; outline: none;
-  flex-shrink: 0;
-}
+.toggle { width: 32px; height: 18px; background: #E0E0E0; border-radius: 18px; position: relative; cursor: pointer; transition: background .18s; border: none; outline: none; flex-shrink: 0; }
 .toggle.on { background: #27AE60; }
-.toggle::after {
-  content: '';
-  position: absolute;
-  top: 2px; left: 2px;
-  width: 14px; height: 14px;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform 0.18s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
+.toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: transform .18s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
 .toggle.on::after { transform: translateX(14px); }
 
-.icon-btn {
-  width: 26px; height: 26px;
-  border: 1px solid #E8E8E8;
-  border-radius: 5px;
-  background: #fff;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; color: #888;
-  transition: all 0.12s;
-  flex-shrink: 0;
-}
+.icon-btn { width: 26px; height: 26px; border: 1px solid #E8E8E8; border-radius: 5px; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #888; transition: all .12s; flex-shrink: 0; }
 .icon-btn:hover { border-color: #27AE60; color: #27AE60; }
-.icon-btn-del { border-color: #FFDDDD; color: #E74C3C; }
-.icon-btn-del:hover { background: #FFF5F5; border-color: #E74C3C; }
+.icon-btn.del { border-color: #FFDDDD; color: #E74C3C; }
+.icon-btn.del:hover { background: #FFF5F5; border-color: #E74C3C; }
+.icon-btn.active-edit { border-color: #27AE60; background: #F0FBF4; color: #27AE60; }
 
-/* Add tab button */
-.add-tab-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  border: 1.5px dashed #27AE60;
-  border-radius: 8px;
-  background: #F5FBF7;
-  color: #27AE60;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.12s;
-  margin-bottom: 6px;
-  font-family: inherit;
-  width: 100%;
+/* ── Inline expand panel ── */
+.expand-panel {
+  display: none;
+  border: 1px solid #27AE60; border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: #fff; padding: 16px;
+  margin-bottom: 0;
 }
-.add-tab-row:hover { background: #EBF7F2; }
-.add-tab-row:disabled { opacity: 0.4; cursor: not-allowed; }
-.add-tab-count { margin-left: auto; font-weight: 400; color: #AAA; font-size: 11px; }
+.expand-panel.open { display: block; }
 
-/* Hidden tabs area */
-.hidden-drop-zone {
-  min-height: 42px;
-  border: 1.5px dashed #E0E0E0;
-  border-radius: 8px;
-  padding: 8px;
-  background: #FAFAFA;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-}
-.hidden-drop-zone.empty::after {
-  content: '將 Tab 的開關關閉後會出現在此區塊';
-  font-size: 11px;
-  color: #CCC;
-  width: 100%;
-  text-align: center;
-}
+.expand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.expand-grid.single { grid-template-columns: 1fr; }
 
-/* ── Edit side panel ─────────────────────────────────────────────── */
-.edit-side {
-  background: #fff;
-  border: 1px solid #EBEBEB;
-  border-radius: 10px;
-  overflow: hidden;
-  position: sticky;
-  top: 20px;
-}
-.edit-side-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid #F2F2F2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.edit-side-title { font-size: 13px; font-weight: 700; color: #333; }
-.edit-side-body { padding: 16px; }
-
-.form-group { margin-bottom: 14px; }
-.form-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .05em; display: flex; align-items: center; gap: 4px; }
 .req { color: #E74C3C; }
-.form-input {
-  width: 100%;
-  border: 1px solid #DDD;
-  border-radius: 6px;
-  padding: 8px 10px;
-  font-size: 13px;
-  color: #333;
-  background: #FAFAFA;
-  outline: none;
-  font-family: inherit;
-  transition: border-color 0.12s;
-}
+.form-input { border: 1px solid #DDD; border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #333; background: #FAFAFA; outline: none; font-family: inherit; transition: border-color .12s; width: 100%; }
 .form-input:focus { border-color: #27AE60; background: #fff; }
 .form-input.err { border-color: #E74C3C; background: #FFF5F5; }
-
-.char-count { font-size: 11px; color: #CCC; text-align: right; margin-top: 2px; }
+.char-count { font-size: 10px; color: #CCC; text-align: right; }
 .char-count.warn { color: #E67E22; }
-.err-msg { font-size: 11px; color: #E74C3C; margin-top: 3px; display: none; }
+.err-msg { font-size: 11px; color: #E74C3C; display: none; }
 .err-msg.show { display: block; }
 
-.link-type-row { display: flex; gap: 6px; margin-bottom: 8px; }
-.link-type-btn {
-  flex: 1; padding: 7px;
-  border: 1px solid #DDD;
-  border-radius: 6px;
-  background: #FAFAFA;
-  font-size: 11px; font-weight: 600; color: #888;
-  cursor: pointer;
-  transition: all 0.12s;
-  font-family: inherit;
-}
-.link-type-btn.active { border-color: #27AE60; background: #F0FBF4; color: #27AE60; }
-
-/* Icon upload */
-.icon-upload-zone {
-  border: 1.5px dashed #DDD;
-  border-radius: 8px;
-  padding: 12px;
-  cursor: pointer;
-  transition: border-color 0.12s, background 0.12s;
-  background: #FAFAFA;
-}
-.icon-upload-zone:hover { border-color: #27AE60; background: #F5FBF7; }
+/* Icon upload in expand */
 .icon-upload-row { display: flex; align-items: center; gap: 10px; }
-.icon-preview {
-  width: 38px; height: 38px;
-  border-radius: 8px;
-  background: #F0F0F0;
-  display: flex; align-items: center; justify-content: center;
-  color: #666; flex-shrink: 0; overflow: hidden;
-}
-.icon-preview svg { width: 22px; height: 22px; }
-.icon-preview img { width: 38px; height: 38px; object-fit: cover; }
-.icon-upload-text { font-size: 12px; color: #666; }
-.icon-upload-spec { font-size: 10px; color: #BBB; margin-top: 2px; }
-.icon-upload-warn { font-size: 10px; color: #E67E22; margin-top: 2px; display: none; }
-.icon-badge { font-size: 10px; color: #4A90E2; margin-top: 1px; }
+.icon-upload-zone { border: 1.5px dashed #DDD; border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all .12s; background: #FAFAFA; flex: 1; }
+.icon-upload-zone:hover { border-color: #27AE60; background: #F5FBF7; }
+.icon-upload-inner { display: flex; align-items: center; gap: 10px; }
+.icon-prev-box { width: 34px; height: 34px; border-radius: 7px; background: #EFEFEF; display: flex; align-items: center; justify-content: center; color: #888; flex-shrink: 0; overflow: hidden; }
+.icon-prev-box svg { width: 20px; height: 20px; }
+.icon-prev-box img { width: 34px; height: 34px; object-fit: cover; }
+.icon-upload-texts { flex: 1; }
+.icon-upload-main { font-size: 12px; color: #555; font-weight: 500; }
+.icon-upload-spec { font-size: 10px; color: #BBB; }
+.icon-upload-warn { font-size: 10px; color: #E67E22; display: none; }
+.icon-badge-text { font-size: 10px; color: #4A90E2; }
 
-.reset-btn {
-  width: 100%;
-  padding: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #888;
-  background: #fff;
-  border: 1px solid #DDD;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 6px;
-  font-family: inherit;
-  transition: border-color 0.12s;
-}
-.reset-btn:hover { border-color: #999; color: #444; }
-
-.edit-actions { display: flex; gap: 8px; margin-top: 16px; }
-.btn {
-  padding: 9px 16px;
-  border-radius: 7px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: all 0.12s;
-}
-.btn-ghost { background: #fff; border: 1px solid #DDD; color: #666; }
-.btn-ghost:hover { border-color: #999; color: #333; }
-.btn-green { background: #27AE60; color: #fff; }
-.btn-green:hover { background: #219A52; }
-.btn-red { background: #E74C3C; color: #fff; }
-
-.empty-edit-state {
-  padding: 28px 16px;
-  text-align: center;
-  color: #CCC;
-  font-size: 12px;
-}
+.reset-link { font-size: 11px; color: #888; text-decoration: underline; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.reset-link:hover { color: #555; }
 
 input[type="file"] { display: none; }
 
-/* ── Preview phone ────────────────────────────────────────────────── */
-.phone-outer {
-  background: #fff;
-  border: 1px solid #EBEBEB;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-.phone-outer-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid #F2F2F2;
-  font-size: 13px;
-  font-weight: 700;
-  color: #333;
-}
-.phone-outer-body { padding: 16px; }
+/* Expand footer */
+.expand-footer { display: flex; justify-content: flex-end; padding-top: 4px; border-top: 1px solid #F0F0F0; margin-top: 4px; }
+.btn-done { padding: 7px 20px; background: #27AE60; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .12s; }
+.btn-done:hover { background: #219A52; }
 
-.phone-frame {
-  width: 200px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 28px;
-  border: 5px solid #2A2A2A;
-  overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
-}
-.phone-notch { background: #2A2A2A; height: 18px; border-radius: 0 0 10px 10px; width: 64px; margin: 0 auto; }
-.phone-screen { background: #F5F5F5; min-height: 260px; display: flex; flex-direction: column; }
-.phone-body-content { flex: 1; display: flex; align-items: center; justify-content: center; }
+/* ── Add tab button ── */
+.add-tab-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 12px; border-radius: 8px; border: 1.5px dashed #27AE60; background: #F5FBF7; color: #27AE60; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .12s; font-family: inherit; margin-bottom: 6px; }
+.add-tab-btn:hover { background: #EBF7F2; }
+.add-tab-btn:disabled { opacity: .4; cursor: not-allowed; }
+.add-tab-count { margin-left: auto; font-weight: 400; color: #AAA; font-size: 11px; }
+
+/* ── Hidden zone ── */
+.hidden-zone { min-height: 40px; border: 1.5px dashed #E0E0E0; border-radius: 8px; padding: 8px; background: #FAFAFA; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.hidden-zone.empty { position: relative; }
+.hidden-zone.empty::after { content: '將選單的開關關閉後會出現在此區塊'; font-size: 11px; color: #CCC; width: 100%; text-align: center; }
+.hidden-chip { display: flex; align-items: center; gap: 5px; background: #fff; border: 1px solid #E8E8E8; border-radius: 6px; padding: 4px 8px; font-size: 11px; color: #888; }
+
+/* Drag visual */
+.tab-row.drag-ghost { opacity: .3; }
+.tab-row.drag-over { border-color: #27AE60 !important; background: #F0FBF4; box-shadow: 0 0 0 2px rgba(39,174,96,.2); }
+
+/* ── Preview column ── */
+.preview-col { position: sticky; top: 80px; }
+.preview-card { background: #fff; border: 1px solid #EBEBEB; border-radius: 10px; overflow: hidden; }
+.preview-card-header { padding: 12px 16px; border-bottom: 1px solid #F2F2F2; font-size: 13px; font-weight: 700; color: #333; }
+.preview-card-body { padding: 16px; }
+.phone-frame { width: 250px; margin: 0 auto; background: #fff; border-radius: 34px; border: 7px solid #2A2A2A; overflow: hidden; box-shadow: 0 14px 44px rgba(0,0,0,.18); }
+.phone-notch { background: #2A2A2A; height: 22px; border-radius: 0 0 14px 14px; width: 80px; margin: 0 auto; }
+.phone-screen { background: #F5F5F5; min-height: 340px; display: flex; flex-direction: column; }
+.phone-body { flex: 1; display: flex; align-items: center; justify-content: center; }
 .phone-placeholder { text-align: center; color: #DDD; font-size: 11px; }
-.phone-tab-bar {
-  display: flex;
-  background: #fff;
-  border-top: 0.5px solid #E8E8E8;
-  padding: 5px 0 8px;
-}
-.phone-tab {
-  flex: 1;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 2px; padding: 2px;
-  opacity: 0.35;
-  transition: opacity 0.15s;
-}
-.phone-tab.act { opacity: 1; }
-.phone-tab-svg { width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; }
-.phone-tab-svg svg { width: 17px; height: 17px; stroke: #555; }
-.phone-tab.act .phone-tab-svg svg { stroke: #27AE60; }
-.phone-tab-lbl { font-size: 8px; color: #555; font-weight: 500; text-align: center; max-width: 32px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.phone-tab.act .phone-tab-lbl { color: #27AE60; font-weight: 700; }
 
-.enabled-counter {
-  text-align: center;
-  font-size: 11px;
-  color: #AAA;
-  margin-top: 10px;
-}
-.enabled-counter strong { color: #27AE60; }
 
-/* ── Bottom save bar ─────────────────────────────────────────────── */
-.save-bar {
+
+/* ── Phone more-menu popup ── */
+.phone-screen { position: relative; }
+.phone-more-menu {
+  position: absolute;
+  bottom: 58px; right: 4px;
   background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.18);
+  overflow: hidden;
+  min-width: 110px;
+  display: none;
+  z-index: 10;
+  border: .5px solid #E8E8E8;
+}
+.phone-more-menu.open { display: block; }
+.phone-more-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  font-size: 10px; color: #333; font-weight: 500;
+  border-bottom: .5px solid #F0F0F0;
+  cursor: pointer;
+}
+.phone-more-item:last-child { border-bottom: none; }
+.phone-more-item svg { width: 14px; height: 14px; stroke: #555; flex-shrink: 0; }
+.phone-more-cancel {
+  padding: 9px 14px;
+  font-size: 10px; color: #888; text-align: center;
   border-top: 1px solid #EBEBEB;
-  padding: 14px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
+  cursor: pointer;
+  background: #FAFAFA;
 }
+
+.phone-tabbar { display: flex; background: #fff; border-top: .5px solid #E8E8E8; padding: 7px 0 12px; }
+.p-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 2px; opacity: .35; transition: opacity .15s; }
+.p-tab.act { opacity: 1; }
+.p-tab svg { width: 22px; height: 22px; }
+
+.p-tab-lbl { font-size: 10px; color: #555; font-weight: 500; text-align: center; max-width: 44px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-tab.act .p-tab-lbl { color: var(--brand); font-weight: 700; }
+.p-tab-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+.enabled-count { text-align: center; font-size: 11px; color: #AAA; margin-top: 10px; }
+.enabled-count strong { color: #27AE60; }
+
+/* ── Save bar ── */
+.save-bar { background: #fff; border-top: 1px solid #EBEBEB; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .save-bar-hint { font-size: 12px; color: #AAA; }
-.save-bar-actions { display: flex; gap: 10px; }
-.btn-save-draft { background: #fff; border: 1px solid #DDD; color: #666; }
-.btn-save-draft:hover { border-color: #27AE60; color: #27AE60; }
-.btn-publish { background: #27AE60; color: #fff; }
-.btn-publish:hover { background: #219A52; }
+.btn-save { padding: 9px 28px; background: #27AE60; color: #fff; border: none; border-radius: 7px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .12s; }
+.btn-save:hover { background: #219A52; }
 
-/* ── Modal ───────────────────────────────────────────────────────── */
-.overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.35);
-  display: none; align-items: center; justify-content: center;
-  z-index: 500;
-  backdrop-filter: blur(2px);
-}
+/* ── Modals ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: none; align-items: center; justify-content: center; z-index: 500; backdrop-filter: blur(2px); }
 .overlay.show { display: flex; }
-.modal {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  width: 340px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-}
+.modal { background: #fff; border-radius: 12px; padding: 24px; width: 340px; box-shadow: 0 16px 48px rgba(0,0,0,.18); }
 .modal-title { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 8px; }
-.modal-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 18px; }
-.modal-field { margin-bottom: 10px; }
-.modal-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; display: block; }
+.modal-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+.modal-field { margin-bottom: 12px; }
+.modal-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; display: block; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-ghost { padding: 8px 16px; background: #fff; border: 1px solid #DDD; color: #666; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-ghost:hover { border-color: #999; color: #333; }
+.btn-green { padding: 8px 16px; background: #27AE60; color: #fff; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-green:hover { background: #219A52; }
+.btn-red { padding: 8px 16px; background: #E74C3C; color: #fff; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
 
-/* ── Toast ───────────────────────────────────────────────────────── */
-.toast {
-  position: fixed;
-  bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(70px);
-  background: #1A2035;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  z-index: 999;
-  transition: transform 0.28s cubic-bezier(.22,.68,0,1.2);
-  pointer-events: none;
-}
+/* ── Toast ── */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(70px); background: #1A2035; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform .28s cubic-bezier(.22,.68,0,1.2); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── Other tabs placeholder ──────────────────────────────────────── */
-.placeholder-pane {
-  display: flex; flex-direction: column; gap: 14px;
-}
-.placeholder-row {
-  height: 44px;
-  background: #fff;
-  border: 1px solid #EBEBEB;
-  border-radius: 8px;
-}
-.placeholder-block {
-  background: #F7F7F7;
-  border-radius: 8px;
-  padding: 28px;
-  text-align: center;
-  color: #CCC;
-  font-size: 13px;
-}
+.placeholder-pane { display: flex; flex-direction: column; gap: 14px; }
+.ph-row { height: 44px; background: #fff; border: 1px solid #EBEBEB; border-radius: 8px; }
+.ph-block { background: #F7F7F7; border-radius: 8px; padding: 28px; text-align: center; color: #CCC; font-size: 13px; }
 </style>
 </head>
 <body>
 
-<!-- Top bar -->
 <div class="topbar">
-  <div class="topbar-brand">
-    <div class="topbar-brand-dot">E</div>
-    Echoss VIP
-  </div>
+  <div class="brand"><div class="brand-dot" style="width:32px;height:32px;border-radius:50%;background:#1A1A2E;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>Echoss VIP</div>
   <div class="topbar-right">
-    <select class="lang-select">
-      <option>語系切換</option>
-      <option>繁體中文</option>
-      <option>English</option>
-    </select>
+    <select class="lang-sel" style="min-width:140px;"><option>快速切換品牌</option><option>CREMIA</option><option>品牌 B</option></select>
     <div class="avatar">A</div>
   </div>
 </div>
 
 <div class="app-body">
-
-  <!-- Sidebar -->
   <div class="sidebar">
-    <div class="nav-item"><span class="nav-icon">⊞</span> 功能模組</div>
-    <div class="nav-item"><span class="nav-icon">📊</span> 會員分析</div>
-    <div class="nav-item"><span class="nav-icon">👤</span> 會員資料</div>
-    <div class="nav-item"><span class="nav-icon">🏷</span> 帳號管理</div>
-    <div class="nav-item"><span class="nav-icon">🏪</span> 門市管理</div>
-    <div class="nav-item active"><span class="nav-icon">⚙️</span> 系統設定</div>
-    <div class="nav-item"><span class="nav-icon">⬇</span> 下載區</div>
-    <div class="nav-item"><span class="nav-icon">📖</span> 使用手冊</div>
+    <div style="position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:22px;height:36px;background:#fff;border:1px solid #E8E8E8;border-radius:0 6px 6px 0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;color:#AAA;font-size:11px;">‹</div>
+    <div class="nav-item active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> 功能模組</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg> 會員分析</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> 會員資料</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg> 帳號管理</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l1-6h16l1 6"/><path d="M3 9a2 2 0 004 0 2 2 0 004 0 2 2 0 004 0 2 2 0 004 0"/><path d="M5 9v12h14V9"/></svg> 門市管理</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> 系統設定</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 下載區</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> 使用手冊</div>
   </div>
 
-  <!-- Main -->
   <div class="main">
-    <div class="page-title">系統設定</div>
-
-    <!-- Sub-tabs -->
+    <div style="font-size:12px;color:#AAA;margin-bottom:12px;">功能模組 / 會員卡</div>
+    <div class="page-title">會員卡</div>
     <div class="subtabs">
-      <div class="subtab active" onclick="switchSubtab('appearance', this)">配色與選單</div>
-      <div class="subtab" onclick="switchSubtab('membercard', this)">會員卡設定</div>
-      <div class="subtab" onclick="switchSubtab('transaction', this)">交易 / 點數紀錄匯入</div>
+      <div class="subtab" onclick="switchTab('cardgroup',this)">會員卡組</div>
+      <div class="subtab" onclick="switchTab('points',this)">點數設定</div>
+      <div class="subtab" onclick="switchTab('transaction_rec',this)">交易紀錄</div>
+      <div class="subtab" onclick="switchTab('points_rec',this)">點數紀錄</div>
+      <div class="subtab active" onclick="switchTab('appearance',this)">配色與選單</div>
+      <div class="subtab" onclick="switchTab('membercard',this)">會員卡設定</div>
+      <div class="subtab" onclick="switchTab('transaction',this)">交易 / 點數紀錄匯入</div>
     </div>
 
-    <!-- ────── Appearance Tab ────── -->
+    <!-- Appearance -->
     <div class="tab-pane active" id="pane-appearance">
-      <div class="settings-cols">
+      <div class="cols">
 
-        <!-- LEFT column -->
+        <!-- LEFT -->
         <div>
 
-          <!-- 介面配色 -->
+          <!-- Color -->
           <div class="card">
-            <div class="card-header">
-              <span class="card-title">🎨 介面配色</span>
-            </div>
+            <div class="card-header"><span class="card-title">介面配色</span></div>
             <div class="card-body">
               <div class="color-row">
                 <div class="color-picker-wrap">
-                  <div class="color-spectrum" id="colorSpectrum">
-                    <canvas id="spectrumCanvas" width="160" height="120"></canvas>
-                  </div>
-                  <div class="hue-slider-wrap">
-                    <input type="range" class="hue-slider" id="hueSlider" min="0" max="360" value="0">
-                  </div>
+                  <div class="color-spectrum"><canvas id="specCanvas" width="160" height="120"></canvas></div>
+                  <input type="range" class="hue-slider" id="hueSlider" min="0" max="360" value="120">
                   <div class="color-hex-row">
-                    <div class="color-preview-swatch" id="colorSwatch" style="background:#000000;"></div>
-                    <input type="text" class="color-hex-input" id="colorHexInput" value="# 000000" maxlength="9">
+                    <div class="color-swatch" id="colorSwatch" style="background:#27AE60;"></div>
+                    <input type="text" class="color-hex-input" id="colorHex" value="# 27AE60" maxlength="9">
                   </div>
                 </div>
-                <div class="color-desc">
-                  選擇的顏色將套用在 App 前台的主題色，包含按鈕、Active 狀態、標示色等。
-                  <br><br>
-                  建議選擇品牌主色，深色效果較佳。
-                </div>
+                <div class="color-desc">選擇的顏色將套用在前台的主題色，包含按鈕、Active 狀態、標示色等。</div>
               </div>
             </div>
           </div>
 
-          <!-- 選單管理 -->
+          <!-- Menu -->
           <div class="card">
             <div class="card-header">
-              <span class="card-title">📱 底部選單管理</span>
+              <span class="card-title">底部選單管理</span>
               <span class="card-hint" id="enabledHint">啟用中 — / 5</span>
             </div>
             <div class="card-body" style="padding-bottom:12px;">
+              <ul class="instr-list">
+                <li data-marker="①">拖曳 <strong>⠿</strong> 可調整選單排列順序</li>
+                <li data-marker="②">關閉開關可隱藏選單，隱藏項目將出現在「不顯示於前台」區塊</li>
+                <li data-marker="③">啟用中的選單超過 5 個時，系統將自動顯示「更多」選單</li>
+                <li data-marker="④">選單可自行更換圖示、自訂外部網頁連結</li>
+              </ul>
 
-              <div class="instr-list" style="margin-bottom:14px;">
-                <ul class="instr-list">
-                  <li data-marker="①">長按下方任一選單，即可<strong>拖拉排序</strong></li>
-                  <li data-marker="②">關閉開關可隱藏選單，隱藏的項目會移至「不顯示於前台」區塊</li>
-                  <li data-marker="③">啟用中的選單超過 5 個時，系統將自動出現「<strong>更多</strong>」選單</li>
-                  <li data-marker="④">「更多」選單不可排序，其內容也可以拖拉排序</li>
-                  <li data-marker="⑤">自訂 Tab 可新增外部連結，不會替換現有的系統選單</li>
-                </ul>
-              </div>
+              <div class="sec-label">系統選單</div>
+              <div id="sysList"></div>
 
-              <!-- System tabs -->
-              <div class="section-divider">系統選單</div>
-              <div id="systemTabList"></div>
-
-              <!-- Custom tabs -->
-              <div class="section-divider" style="margin-top:10px;">自訂選單</div>
-              <div id="customTabList"></div>
-              <button class="add-tab-row" id="addTabBtn" onclick="openAddModal()">
-                <span style="font-size:15px;">＋</span>
-                新增自訂選單（外部連結）
-                <span class="add-tab-count" id="addTabCount"></span>
+              <div class="sec-label" style="margin-top:10px;">自訂選單</div>
+              <div id="custList"></div>
+              <button class="add-tab-btn" id="addBtn" onclick="openAddModal()">
+                + 新增自訂選單（外部連結）
+                <span class="add-tab-count" id="addCount"></span>
               </button>
 
-              <!-- Hidden zone -->
               <div style="margin-top:14px;">
-                <div class="section-divider">不顯示於前台</div>
-                <div class="hidden-drop-zone" id="hiddenZone"></div>
+                <div class="sec-label">不顯示於前台</div>
+                <div class="hidden-zone" id="hiddenZone"></div>
               </div>
-
             </div>
           </div>
-
         </div>
 
-        <!-- RIGHT column -->
-        <div>
-
-          <!-- Phone preview -->
-          <div class="phone-outer">
-            <div class="phone-outer-header">📱 前台預覽</div>
-            <div class="phone-outer-body">
+        <!-- RIGHT: preview only -->
+        <div class="preview-col">
+          <div class="preview-card">
+            <div class="preview-card-header">前台預覽</div>
+            <div class="preview-card-body">
               <div class="phone-frame">
                 <div class="phone-notch"></div>
                 <div class="phone-screen">
-                  <div class="phone-body-content">
-                    <div class="phone-placeholder">
-                      <div style="font-size:24px;margin-bottom:6px;">🃏</div>
-                      <div>會員卡頁面</div>
+                  <div class="phone-body" style="align-items:flex-start;overflow:hidden;">
+                    <div style="width:100%;font-size:0;line-height:1;">
+
+                      <!-- Member card -->
+                      <div style="margin:8px 8px 0;border-radius:10px;overflow:hidden;position:relative;height:90px;background:linear-gradient(135deg,#F2C18D 0%,#7ECFC0 45%,#4A7D8C 100%);">
+                        <div style="position:absolute;top:8px;right:8px;text-align:right;">
+                          <div style="font-size:7px;color:rgba(255,255,255,.9);font-weight:600;">一般會員</div>
+                          <div style="font-size:6px;color:rgba(255,255,255,.8);">有效期限 2026/12/31</div>
+                        </div>
+                        <div style="position:absolute;bottom:10px;left:10px;">
+                          <div style="font-size:6px;color:rgba(255,255,255,.85);">目前點數</div>
+                          <div style="font-size:13px;font-weight:700;color:#fff;">1,234 <span style="font-size:7px;font-weight:400;">點</span></div>
+                        </div>
+                      </div>
+
+                      <!-- Action row -->
+                      <div style="display:flex;justify-content:space-around;padding:6px 4px;border-bottom:.5px solid #EBEBEB;">
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                          <div style="font-size:10px;color:#555;">兌換</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                          <div style="font-size:10px;color:#555;">轉贈</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                          <div style="font-size:10px;color:#555;">集點</div>
+                        </div>
+                      </div>
+
+                      <!-- Barcode -->
+                      <div style="padding:6px 8px;border-bottom:.5px solid #EBEBEB;text-align:center;">
+                        <div style="height:24px;background:repeating-linear-gradient(90deg,#222 0px,#222 2px,#fff 2px,#fff 4px,#222 4px,#222 5px,#fff 5px,#fff 7px,#222 7px,#222 8px,#fff 8px,#fff 11px);border-radius:2px;margin-bottom:2px;"></div>
+                        <div style="font-size:7px;color:#888;letter-spacing:.05em;">0123456789</div>
+                      </div>
+
+                      <!-- Invoice -->
+                      <div style="padding:5px 10px;border-bottom:.5px solid #EBEBEB;display:flex;align-items:center;justify-content:center;gap:4px;">
+                        <div style="font-size:8px;color:#666;">設定發票載具</div>
+                      </div>
+
+                      <!-- Stats row -->
+                      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:5px 6px;border-bottom:.5px solid #EBEBEB;">
+                        <div style="background:#F9F9F9;border-radius:6px;padding:5px 7px;">
+                          <div style="font-size:6.5px;color:#888;margin-bottom:2px;">即將到期點數</div>
+                          <div style="font-size:8px;font-weight:700;color:#27AE60;">200 點</div>
+                          <div style="font-size:6px;color:#BBB;">2026-06-30</div>
+                        </div>
+                        <div style="background:#F9F9F9;border-radius:6px;padding:5px 7px;">
+                          <div style="font-size:6.5px;color:#888;margin-bottom:2px;">累積消費</div>
+                          <div style="font-size:8px;font-weight:700;color:#27AE60;">$12,000 元</div>
+                        </div>
+                      </div>
+
+                      <!-- Level progress -->
+                      <div style="margin:5px 6px;background:#F9F9F9;border-radius:6px;padding:6px 8px;display:flex;align-items:center;gap:6px;">
+                        <div style="width:16px;height:16px;background:#27AE60;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                          <div style="width:8px;height:8px;border:1.5px solid #fff;border-radius:50%;"></div>
+                        </div>
+                        <div>
+                          <div style="font-size:7px;color:#333;font-weight:600;">距離下個等級</div>
+                          <div style="font-size:6.5px;color:#888;">還需要消費 3,000 元</div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
-                  <div class="phone-tab-bar" id="phoneTabBar"></div>
+                  <div id="phoneMoreMenu" class="phone-more-menu"></div>
+                  <div class="phone-tabbar" id="phoneTabbar"></div>
                 </div>
               </div>
-              <div class="enabled-counter" id="enabledCounter"></div>
+              <div class="enabled-count" id="enabledCount"></div>
             </div>
           </div>
-
-          <!-- Edit panel (sticky) -->
-          <div class="edit-side" id="editSide">
-            <div class="edit-side-header">
-              <span class="edit-side-title" id="editSideTitle">選單設定</span>
-              <span style="font-size:11px;color:#CCC;" id="editSideSubtitle"></span>
-            </div>
-            <div class="edit-side-body" id="editSideBody">
-              <div class="empty-edit-state">
-                <div style="font-size:24px;margin-bottom:8px;">👈</div>
-                點選左側選單項目開始編輯
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </div><!-- end pane-appearance -->
 
-    <!-- ────── Other Tabs (placeholder) ────── -->
-    <div class="tab-pane" id="pane-membercard">
-      <div class="placeholder-pane">
-        <div class="placeholder-row"></div>
-        <div class="placeholder-row"></div>
-        <div class="placeholder-block">會員卡設定內容</div>
-      </div>
-    </div>
-    <div class="tab-pane" id="pane-transaction">
-      <div class="placeholder-pane">
-        <div class="placeholder-row"></div>
-        <div class="placeholder-block">交易 / 點數紀錄匯入內容</div>
       </div>
     </div>
 
-  </div><!-- end .main -->
-</div><!-- end .app-body -->
-
-<!-- Save bar -->
-<div class="save-bar">
-  <span class="save-bar-hint">ℹ 目前為草稿版本，點擊「發布」後才會套用至前台</span>
-  <div class="save-bar-actions">
-    <button class="btn btn-save-draft" onclick="saveDraft()">儲存草稿</button>
-    <button class="btn btn-publish" onclick="openPublishModal()">發布</button>
+    <div class="tab-pane" id="pane-cardgroup"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-block">會員卡組內容</div></div></div>
+    <div class="tab-pane" id="pane-points"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-block">點數設定內容</div></div></div>
+    <div class="tab-pane" id="pane-transaction_rec"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-block">交易紀錄內容</div></div></div>
+    <div class="tab-pane" id="pane-points_rec"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-block">點數紀錄內容</div></div></div>
+    <div class="tab-pane" id="pane-membercard"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-row"></div><div class="ph-block">會員卡設定內容</div></div></div>
+    <div class="tab-pane" id="pane-transaction"><div class="placeholder-pane"><div class="ph-row"></div><div class="ph-block">交易 / 點數紀錄匯入內容</div></div></div>
   </div>
+</div>
+
+<div class="save-bar">
+  <span class="save-bar-hint">儲存後將立即套用至前台</span>
+  <button class="btn-save" onclick="doSave()">儲存</button>
 </div>
 
 <!-- Add modal -->
@@ -886,36 +469,24 @@ input[type="file"] { display: none; }
     <div class="modal-desc">自訂選單只能連結至外部網址（https://），且須自行上傳圖示。</div>
     <div class="modal-field">
       <label class="modal-label">選單名稱 <span style="color:#E74C3C;">*</span></label>
-      <input type="text" class="form-input" id="newTabName" placeholder="最多 4 個中文字" maxlength="8">
-      <div class="err-msg" id="newTabNameErr">請輸入名稱</div>
+      <input type="text" class="form-input" id="newName" placeholder="最多 4 個中文字" maxlength="8">
+      <div class="err-msg" id="newNameErr">請輸入名稱</div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAddModal()">取消</button>
-      <button class="btn btn-green" onclick="confirmAdd()">新增</button>
+      <button class="btn-ghost" onclick="closeAddModal()">取消</button>
+      <button class="btn-green" onclick="confirmAdd()">新增</button>
     </div>
   </div>
 </div>
 
 <!-- Delete modal -->
-<div class="overlay" id="deleteModal">
+<div class="overlay" id="delModal">
   <div class="modal">
     <div class="modal-title">刪除自訂選單</div>
-    <div class="modal-desc" id="deleteModalDesc"></div>
+    <div class="modal-desc" id="delDesc"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeDeleteModal()">取消</button>
-      <button class="btn btn-red" onclick="confirmDelete()">確認刪除</button>
-    </div>
-  </div>
-</div>
-
-<!-- Publish modal -->
-<div class="overlay" id="publishModal">
-  <div class="modal">
-    <div class="modal-title">確認發布</div>
-    <div class="modal-desc">發布後，前台底部選單將於 <strong>30 秒內</strong>更新為最新設定。<br>確定要發布嗎？</div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closePublishModal()">取消</button>
-      <button class="btn btn-green" onclick="confirmPublish()">確認發布</button>
+      <button class="btn-ghost" onclick="closeDelModal()">取消</button>
+      <button class="btn-red" onclick="confirmDel()">確認刪除</button>
     </div>
   </div>
 </div>
@@ -923,420 +494,606 @@ input[type="file"] { display: none; }
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── SVG Icons ─────────────────────────────────────────────────────────────
-const ICONS = {
+// ── Icons ──────────────────────────────────────────────────────────────────
+// Line-style (inactive) icons — stroke only, no fill
+const ICONS_LINE = {
   home:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 22V12h6v10"/></svg>`,
   membercard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M7 15h3"/><path d="M14 15h3"/></svg>`,
   voucher:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18"/><path d="M9 4v5"/><path d="M15 4v5"/><path d="M7 14h2"/><path d="M11 14h6"/><path d="M7 17h4"/></svg>`,
   memberzone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`,
-  more:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>`,
   shop:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16l1.5 6H2.5L4 3z"/><path d="M2.5 9v11a1 1 0 001 1h17a1 1 0 001-1V9"/><path d="M9 9v2a3 3 0 006 0V9"/></svg>`,
   pointcard:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M7 6V4a1 1 0 011-1h8a1 1 0 011 1v2"/><circle cx="12" cy="13" r="2.5"/><path d="M8.5 13h-2"/><path d="M17.5 13h-2"/></svg>`,
   link:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
+  more:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>`,
 };
 
-function iconHTML(key, customSrc) {
-  if (customSrc) return `<img src="${customSrc}">`;
-  return ICONS[key] || ICONS.link;
-}
+// ICONS alias points to line style (used in tab list rows)
+const ICONS = ICONS_LINE;
+// Internal pages — flat list for display
+const PAGE_LABELS = {
+  home:         '首頁',
+  membercard:   '會員卡',
+  points:       '會員點數兌換',
+  voucher:      '票券',
+  shop:         '商店',
+  memberzone:   '會員專區',
+};
 
-// ─── Data ──────────────────────────────────────────────────────────────────
-const SYS_TABS = [
-  { id:1, name:'商店',     isSystem:true, iconKey:'shop',       enabled:true,  linkType:'internal', internalPage:'shop',       customIcon:null },
-  { id:2, name:'首頁',     isSystem:true, iconKey:'home',       enabled:true,  linkType:'internal', internalPage:'home',       customIcon:null },
-  { id:3, name:'會員卡',   isSystem:true, iconKey:'membercard', enabled:true,  linkType:'internal', internalPage:'membercard', customIcon:null },
-  { id:4, name:'會員專區', isSystem:true, iconKey:'memberzone', enabled:true,  linkType:'internal', internalPage:'memberzone', customIcon:null },
-  { id:5, name:'票券',     isSystem:true, iconKey:'voucher',    enabled:false, linkType:'internal', internalPage:'voucher',    customIcon:null },
-  { id:6, name:'集點卡',   isSystem:true, iconKey:'pointcard',  enabled:false, linkType:'internal', internalPage:'pointcard',  customIcon:null },
+// Activity stamp cards — brand's live campaigns
+const STAMP_CARDS = [
+  { value: 'stamp_1', label: '集點' },
+  { value: 'stamp_2', label: '集點2' },
+  { value: 'stamp_3', label: '一元一點' },
 ];
-let customTabs = [];
-let nextId = 100;
-let selectedId = null;
-let pendingDeleteId = null;
 
-function allTabs() { return [...SYS_TABS, ...customTabs]; }
-function enabledTabs() { return allTabs().filter(t => t.enabled); }
-function enabledCount() { return enabledTabs().length; }
-
-// ─── Sub-tab switch ────────────────────────────────────────────────────────
-function switchSubtab(id, el) {
-  document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('pane-' + id).classList.add('active');
+function iconEl(iconKey, customIcon, size=16, tab=null) {
+  if (tab && tab.customSvg) {
+    const normalSvg = tab.customSvg
+      .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+      .replace(/stroke="(?!none)[^"]*"/g, 'stroke="currentColor"')
+      .replace(/<svg /, `<svg width="${size}" height="${size}" `);
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;color:#555;">${normalSvg}</span>`;
+  }
+  if (customIcon) return `<img src="${customIcon}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:3px;">`;
+  const svg = ICONS[iconKey] || ICONS.link;
+  return svg.replace(/fill="currentColor"/g, 'fill="#555"').replace(/<svg /, `<svg width="${size}" height="${size}" `);
 }
 
-// ─── Render Tab Lists ──────────────────────────────────────────────────────
+// ── Data ───────────────────────────────────────────────────────────────────
+const SYS = [
+  { id:1, name:'商店',     sys:true, iconKey:'shop',       enabled:true,  linkType:'internal', page:'shop',       url:'', method:'webview', customIcon:null },
+  { id:2, name:'首頁',     sys:true, iconKey:'home',       enabled:true,  linkType:'internal', page:'home',       url:'', method:'webview', customIcon:null },
+  { id:3, name:'會員卡',   sys:true, iconKey:'membercard', enabled:true,  linkType:'internal', page:'membercard', url:'', method:'webview', customIcon:null },
+  { id:4, name:'會員專區', sys:true, iconKey:'memberzone', enabled:true,  linkType:'internal', page:'memberzone', url:'', method:'webview', customIcon:null },
+  { id:5, name:'票券',     sys:true, iconKey:'voucher',    enabled:false, linkType:'internal', page:'voucher',    url:'', method:'webview', customIcon:null },
+  { id:6, name:'集點卡', sys:true, iconKey:'pointcard', enabled:false, linkType:'internal', page:'pointcard',  url:'', method:'webview', customIcon:null },
+];
+let CUST = [];
+let nextId = 100;
+let openId = null;   // currently expanded row
+let pendingDelId = null;
+let dragSrcId = null, dragSrcGroup = null;
+
+function all() { return [...SYS, ...CUST]; }
+function enabled() { return all().filter(t => t.enabled); }
+function ec() { return enabled().length; }
+
+// ── Render ─────────────────────────────────────────────────────────────────
 function render() {
-  const ec = enabledCount();
-  document.getElementById('enabledHint').textContent = `啟用中 ${ec} / 5`;
+  document.getElementById('enabledHint').textContent = `啟用中 ${ec()} 個（超過 5 個自動折入「更多」）`;
 
-  // System tabs
-  const sl = document.getElementById('systemTabList');
+  const sl = document.getElementById('sysList');
   sl.innerHTML = '';
-  SYS_TABS.forEach(t => sl.appendChild(makeRow(t)));
+  SYS.forEach(t => sl.appendChild(makeWrap(t, 'sys')));
 
-  // Custom tabs
-  const cl = document.getElementById('customTabList');
+  const cl = document.getElementById('custList');
   cl.innerHTML = '';
-  if (customTabs.length === 0) {
+  if (CUST.length === 0) {
     cl.innerHTML = '<div style="font-size:11px;color:#CCC;padding:4px 4px 8px;text-align:center;">尚未新增自訂選單</div>';
   } else {
-    customTabs.forEach(t => cl.appendChild(makeRow(t)));
+    CUST.forEach(t => cl.appendChild(makeWrap(t, 'cust')));
   }
 
-  // Add button
-  const rem = 5 - customTabs.length;
-  const btn = document.getElementById('addTabBtn');
-  btn.disabled = customTabs.length >= 5;
-  document.getElementById('addTabCount').textContent = `最多可再新增 ${Math.max(0,rem)} 個`;
+  const rem = 5 - CUST.length;
+  document.getElementById('addBtn').disabled = CUST.length >= 5;
+  document.getElementById('addCount').textContent = `最多可再新增 ${Math.max(0,rem)} 個`;
 
-  // Hidden zone
   const hz = document.getElementById('hiddenZone');
-  const hidden = allTabs().filter(t => !t.enabled);
-  if (hidden.length === 0) {
-    hz.innerHTML = '';
-    hz.classList.add('empty');
-  } else {
+  const hidden = all().filter(t => !t.enabled);
+  if (hidden.length === 0) { hz.innerHTML = ''; hz.classList.add('empty'); }
+  else {
     hz.classList.remove('empty');
-    hz.innerHTML = hidden.map(t => `
-      <div style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #E8E8E8;border-radius:6px;padding:5px 8px;font-size:11px;color:#888;">
-        <span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:#AAA;">${iconHTML(t.iconKey,t.customIcon)}</span>
-        ${t.name}
-      </div>`).join('');
+    hz.innerHTML = hidden.map(t => `<div class="hidden-chip">${iconEl(t.iconKey,t.customIcon,14)} ${t.name}</div>`).join('');
   }
 
   renderPhone();
 }
 
-function makeRow(tab) {
-  const div = document.createElement('div');
-  div.className = `tab-row${tab.id === selectedId ? ' selected' : ''}${!tab.enabled ? ' tab-disabled' : ''}${!tab.isSystem ? ' tab-custom' : ''}`;
+function makeWrap(tab, group) {
+  const wrap = document.createElement('div');
+  wrap.className = 'tab-row-wrap';
 
-  const kindBadge = tab.isSystem
-    ? `<span class="badge badge-sys">系統</span>`
-    : `<span class="badge badge-custom">自訂</span>`;
-  const typeBadge = !tab.isSystem ? `<span class="badge badge-ext">外連</span>` : '';
-  const offBadge = !tab.enabled ? `<span class="badge badge-off">停用</span>` : '';
+  // ── Row ──
+  const row = document.createElement('div');
+  const isOpen = tab.id === openId;
+  row.className = `tab-row${!tab.enabled?' tab-off':''}${!tab.sys?' tab-custom':''}${isOpen?' is-open':''}`;
 
-  const delBtn = !tab.isSystem
-    ? `<button class="icon-btn icon-btn-del" onclick="openDeleteModal(event,${tab.id})" title="刪除">✕</button>`
-    : '';
+  const kindBadge = tab.sys ? `<span class="badge badge-sys">系統</span>` : `<span class="badge badge-custom">自訂</span>`;
+  const extBadge  = tab.linkType === 'external' ? `<span class="badge badge-ext">外連</span>` : '';
+  const offBadge  = !tab.enabled ? `<span class="badge badge-off">停用</span>` : '';
+  const subText   = tab.sys ? '' : (tab.url || '⚠ 尚未設定網址');
+  const delBtn    = !tab.sys ? `<button class="icon-btn del" onclick="openDelModal(event,${tab.id})" title="刪除">✕</button>` : '';
 
-  const subtext = tab.isSystem
-    ? `<span class="tab-url-hint">內部頁面</span>`
-    : `<span class="tab-url-hint">${tab.externalUrl || '⚠ 尚未設定網址'}</span>`;
-
-  div.innerHTML = `
-    <span class="drag-handle">⠿</span>
-    <div class="tab-icon-box">${iconHTML(tab.iconKey, tab.customIcon)}</div>
-    <div style="flex:1;min-width:0;">
+  row.innerHTML = `
+    <span class="drag-handle" title="拖曳排序">⠿</span>
+    <div class="tab-icon-box">${iconEl(tab.iconKey, tab.customIcon)}</div>
+    <div class="tab-name-col">
       <div class="tab-name">${tab.name}</div>
-      ${subtext}
+      ${subText ? `<div class="tab-sub">${subText}</div>` : ""}
     </div>
-    <div style="display:flex;gap:4px;align-items:center;flex-shrink:0;">
-      ${kindBadge}${typeBadge}${offBadge}
-    </div>
-    <button class="toggle${tab.enabled ? ' on' : ''}" onclick="toggleTab(event,${tab.id})"></button>
-    <button class="icon-btn" onclick="selectTab(${tab.id})" title="編輯">✏</button>
+    <div class="tab-badges">${kindBadge}${extBadge}${offBadge}</div>
+    <button class="toggle${tab.enabled?' on':''}" onclick="toggleTab(event,${tab.id})"></button>
+    <button class="icon-btn${isOpen?' active-edit':''}" onclick="toggleExpand(event,${tab.id})" title="編輯">✏</button>
     ${delBtn}
   `;
-  return div;
+
+  setupDrag(row, tab, group);
+  wrap.appendChild(row);
+
+  // ── Expand panel ──
+  const panel = document.createElement('div');
+  panel.className = `expand-panel${isOpen?' open':''}`;
+  panel.id = `panel-${tab.id}`;
+  if (isOpen) panel.innerHTML = buildExpandHTML(tab);
+  wrap.appendChild(panel);
+
+  return wrap;
 }
 
-// ─── Toggle ────────────────────────────────────────────────────────────────
-function toggleTab(e, id) {
-  e.stopPropagation();
-  const tab = allTabs().find(t => t.id === id);
-  if (!tab) return;
-  if (tab.enabled && enabledCount() <= 1) { showToast('⚠ 至少須保留 1 個啟用的選單'); return; }
-  if (!tab.enabled && enabledCount() >= 5) { showToast('⚠ 最多同時啟用 5 個選單，請先停用其他項目'); return; }
-  tab.enabled = !tab.enabled;
-  render();
-}
-
-// ─── Select & Edit ─────────────────────────────────────────────────────────
-function selectTab(id) {
-  selectedId = id;
-  const tab = allTabs().find(t => t.id === id);
-  if (!tab) return;
-
-  document.getElementById('editSideTitle').textContent = `編輯「${tab.name}」`;
-  document.getElementById('editSideSubtitle').textContent = tab.isSystem ? '系統選單' : '自訂選單';
-
-  let iconPreviewHTML;
-  let iconBadge = '';
-  let showReset = false;
-  if (tab.customIcon) {
-    iconPreviewHTML = `<img src="${tab.customIcon}" style="width:38px;height:38px;object-fit:cover;border-radius:8px;">`;
-    if (tab.isSystem) { iconBadge = '已覆蓋預設圖示'; showReset = true; }
-  } else if (tab.isSystem) {
-    iconPreviewHTML = `<span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#555;">${ICONS[tab.iconKey]}</span>`;
+function buildExpandHTML(tab) {
+  // Icon section
+  let iconPreview, iconBadge = '', showReset = false;
+  if (tab.customSvg) {
+    const normalSvg = tab.customSvg
+      .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+      .replace(/stroke="(?!none)[^"]*"/g, 'stroke="currentColor"')
+      .replace(/<svg /, '<svg width="34" height="34" ');
+    iconPreview = `<span style="display:inline-flex;align-items:center;justify-content:center;color:#555;">${normalSvg}</span>`;
+    if (tab.sys) { iconBadge = '已覆蓋預設圖示'; showReset = true; }
+  } else if (tab.customIcon) {
+    iconPreview = `<img src="${tab.customIcon}" style="width:34px;height:34px;object-fit:cover;border-radius:7px;">`;
+    if (tab.sys) { iconBadge = '已覆蓋預設圖示'; showReset = true; }
+  } else if (tab.sys) {
+    iconPreview = `<span style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#555;">${ICONS[tab.iconKey]}</span>`;
     iconBadge = '使用預設圖示';
   } else {
-    iconPreviewHTML = `<span style="font-size:20px;color:#DDD;">📤</span>`;
+    iconPreview = `<span style="font-size:18px;color:#CCC;">📤</span>`;
   }
-  const mustUpload = !tab.isSystem && !tab.customIcon;
+  const mustUpload = !tab.sys && !tab.customIcon && !tab.customSvg;
 
-  const linkSection = tab.isSystem ? `
+  const iconSection = `
     <div class="form-group">
-      <label class="form-label">連結頁面</label>
-      <select class="form-input" id="editPage">
-        ${['home','membercard','memberzone','shop','voucher','pointcard'].map(v =>
-          `<option value="${v}" ${tab.internalPage===v?'selected':''}>${{home:'首頁',membercard:'會員卡',memberzone:'會員專區',shop:'商店',voucher:'票券',pointcard:'集點卡'}[v]}</option>`
-        ).join('')}
-      </select>
-    </div>` : `
+      <label class="form-label">選單圖示 ${iconBadge ? `<span class="icon-badge-text">（${iconBadge}）</span>` : ''}</label>
+      <div class="icon-upload-row">
+        <div class="icon-upload-zone" onclick="document.getElementById('iconFile_${tab.id}').click()">
+          <div class="icon-upload-inner">
+            <div class="icon-prev-box" id="iconPrev_${tab.id}">${iconPreview}</div>
+            <div class="icon-upload-texts">
+              <div class="icon-upload-main">${tab.customIcon ? '點擊更換圖示' : '點擊上傳圖示'}</div>
+              <div class="icon-upload-spec">PNG / SVG・48×48px・最大 200KB</div>
+              <div class="icon-upload-warn" id="iconWarn_${tab.id}" style="${mustUpload?'display:block':''}">⚠ 自訂選單須上傳圖示</div>
+            </div>
+          </div>
+        </div>
+        ${showReset ? `<span class="reset-link" onclick="resetIcon(${tab.id})">↩ 恢復預設</span>` : ''}
+      </div>
+      <input type="file" id="iconFile_${tab.id}" accept="image/png,image/svg+xml,image/jpeg" onchange="handleIconUpload(event,${tab.id})">
+    </div>`;
+
+  const nameSection = `
     <div class="form-group">
-      <label class="form-label">外部網址 <span class="req">*</span></label>
-      <input type="url" class="form-input" id="editUrl" placeholder="https://example.com" value="${tab.externalUrl||''}" oninput="validateUrl()">
-      <div class="err-msg" id="urlErr">請輸入有效的 https:// 網址</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">開啟方式 <span class="req">*</span></label>
-      <select class="form-input" id="editOpenMethod">
-        <option value="webview" ${!tab.openMethod||tab.openMethod==='webview'?'selected':''}>在 App 內開啟（WebView）</option>
-        <option value="browser" ${tab.openMethod==='browser'?'selected':''}>跳出至 LINE 瀏覽器</option>
+      <label class="form-label">顯示名稱 <span class="req">*</span></label>
+      <input type="text" class="form-input" id="eName_${tab.id}" maxlength="8" value="${tab.name}" oninput="countName(${tab.id})">
+      <div class="char-count" id="eNameCount_${tab.id}"></div>
+      <div class="err-msg" id="eNameErr_${tab.id}">名稱不能為空</div>
+    </div>`;
+
+  // Link section:
+  // - System tabs: toggle between internal / external
+  // - Custom tabs: external only, no toggle shown
+  const isInternal = tab.sys ? (tab.linkType || 'internal') === 'internal' : false;
+
+  const internalFields = `
+    <select class="form-input" id="ePage_${tab.id}">
+      <optgroup label="頁面">
+        ${Object.entries(PAGE_LABELS).map(([v,l]) => `<option value="${v}" ${tab.page===v?'selected':''}>${l}</option>`).join('')}
+      </optgroup>
+      <optgroup label="活動集點卡">
+        ${STAMP_CARDS.map(s => `<option value="${s.value}" ${tab.page===s.value?'selected':''}>${s.label}</option>`).join('')}
+      </optgroup>
+    </select>`;
+
+  const externalFields = `
+    <input type="url" class="form-input" id="eUrl_${tab.id}" placeholder="https://example.com" value="${tab.url||''}" oninput="validateUrl(${tab.id})">
+    <div class="err-msg" id="eUrlErr_${tab.id}">請輸入有效的 https:// 網址</div>
+    <div style="margin-top:10px;">
+      <label class="form-label" style="margin-bottom:5px;">開啟方式</label>
+      <select class="form-input" id="eMethod_${tab.id}">
+        <option value="webview" ${!tab.method||tab.method==='webview'?'selected':''}>在 LINE 內部開啟（WebView）</option>
+        <option value="browser" ${tab.method==='browser'?'selected':''}>跳轉外部瀏覽器開啟</option>
       </select>
     </div>`;
 
-  document.getElementById('editSideBody').innerHTML = `
-    <div class="form-group">
-      <label class="form-label">顯示名稱 <span class="req">*</span></label>
-      <input type="text" class="form-input" id="editName" placeholder="最多 4 個中文字" maxlength="8" value="${tab.name}" oninput="countName()">
-      <div class="char-count" id="nameCount"></div>
-      <div class="err-msg" id="nameErr">名稱不能為空</div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">選單圖示
-        ${iconBadge ? `<span class="icon-badge">（${iconBadge}）</span>` : ''}
-      </label>
-      <div class="icon-upload-zone" onclick="document.getElementById('iconFile_${id}').click()">
-        <div class="icon-upload-row">
-          <div class="icon-preview" id="iconPrev">${iconPreviewHTML}</div>
-          <div>
-            <div class="icon-upload-text">${tab.customIcon ? '點擊更換圖示' : '點擊上傳圖示'}</div>
-            <div class="icon-upload-spec">PNG / SVG・48×48px・最大 200KB</div>
-            <div class="icon-upload-warn" id="uploadWarn" style="${mustUpload?'display:block':''}">⚠ 自訂選單須上傳圖示</div>
-          </div>
-        </div>
+  const linkSection = tab.sys ? `
+    <div class="form-group" style="grid-column:1/-1;">
+      <label class="form-label">連結類型</label>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <button type="button"
+          style="flex:1;padding:7px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s;border:1.5px solid ${isInternal?'#27AE60':'#DDD'};background:${isInternal?'#F0FBF4':'#FAFAFA'};color:${isInternal?'#27AE60':'#888'};"
+          onclick="switchLinkType(${tab.id},'internal')">🏠 內部頁面</button>
+        <button type="button"
+          style="flex:1;padding:7px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s;border:1.5px solid ${!isInternal?'#27AE60':'#DDD'};background:${!isInternal?'#F0FBF4':'#FAFAFA'};color:${!isInternal?'#27AE60':'#888'};"
+          onclick="switchLinkType(${tab.id},'external')">🔗 外部連結</button>
       </div>
-      <input type="file" id="iconFile_${id}" accept="image/png,image/svg+xml,image/jpeg" onchange="handleIconUpload(event,${id})">
-      ${showReset ? `<button class="reset-btn" onclick="resetIcon()">↩ 恢復預設圖示</button>` : ''}
+      ${isInternal ? internalFields : externalFields}
+    </div>` : `
+    <div class="form-group" style="grid-column:1/-1;">
+      <label class="form-label">外部連結網址 <span class="req">*</span></label>
+      ${externalFields}
+    </div>`;
+
+  return `
+    <div class="expand-grid">
+      ${nameSection}
+      ${iconSection}
     </div>
-
-    ${linkSection}
-
-    <div class="edit-actions">
-      <button class="btn btn-ghost" style="flex:1" onclick="cancelEdit()">取消</button>
-      <button class="btn btn-green" style="flex:1" onclick="saveTab(${id})">儲存</button>
+    <div class="expand-grid" style="grid-template-columns:1fr;">
+      ${linkSection}
     </div>
-  `;
-
-  countName();
-  render();
+    <div class="expand-footer">
+      <button class="btn-done" onclick="applyEdit(${tab.id})">完成</button>
+    </div>`;
 }
 
-function cancelEdit() {
-  selectedId = null;
-  document.getElementById('editSideTitle').textContent = '選單設定';
-  document.getElementById('editSideSubtitle').textContent = '';
-  document.getElementById('editSideBody').innerHTML = `<div class="empty-edit-state"><div style="font-size:24px;margin-bottom:8px;">👈</div>點選左側選單項目開始編輯</div>`;
+// ── Expand toggle ──────────────────────────────────────────────────────────
+function toggleExpand(e, id) {
+  e.stopPropagation();
+  openId = (openId === id) ? null : id;
   render();
+  if (openId !== null) {
+    setTimeout(() => {
+      const el = document.getElementById(`panel-${openId}`);
+      if (el) { el.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+      const nameEl = document.getElementById(`eName_${openId}`);
+      if (nameEl) { countName(openId); }
+    }, 50);
+  }
 }
 
-function countName() {
-  const el = document.getElementById('editName');
-  const c = document.getElementById('nameCount');
-  if (!el||!c) return;
+function countName(id) {
+  const el = document.getElementById(`eName_${id}`);
+  const cnt = document.getElementById(`eNameCount_${id}`);
+  if (!el||!cnt) return;
   const len = [...el.value].length;
-  c.textContent = `${len} / 4 字`;
-  c.className = `char-count${len>4?' warn':''}`;
+  cnt.textContent = `${len} / 4 字`;
+  cnt.className = `char-count${len>4?' warn':''}`;
 }
 
-function validateUrl() {
-  const url = document.getElementById('editUrl')?.value||'';
-  const bad = url && !url.startsWith('https://');
-  document.getElementById('urlErr')?.classList.toggle('show', bad);
-  document.getElementById('editUrl')?.classList.toggle('err', bad);
+function validateUrl(id) {
+  const el = document.getElementById(`eUrl_${id}`);
+  const err = document.getElementById(`eUrlErr_${id}`);
+  if (!el||!err) return;
+  const bad = el.value && !el.value.startsWith('https://');
+  err.classList.toggle('show', bad);
+  el.classList.toggle('err', bad);
 }
 
-function handleIconUpload(event, tabId) {
+function switchLinkType(id, type) {
+  const tab = all().find(t => t.id === id);
+  if (!tab) return;
+  tab.linkType = type;
+  // Re-render just the expand panel content
+  const panel = document.getElementById(`panel-${id}`);
+  if (panel) panel.innerHTML = buildExpandHTML(tab);
+  setTimeout(() => countName(id), 10);
+}
+
+function applyEdit(id) {
+  const tab = all().find(t => t.id === id);
+  if (!tab) return;
+
+  const name = document.getElementById(`eName_${id}`)?.value.trim();
+  if (!name) { document.getElementById(`eNameErr_${id}`)?.classList.add('show'); return; }
+  document.getElementById(`eNameErr_${id}`)?.classList.remove('show');
+
+  // Icon required for custom tabs only
+  if (!tab.sys && !tab.customIcon && !tab.customSvg) { showToast('⚠ 請先上傳選單圖示'); return; }
+
+  // Save link config based on current linkType
+  const linkType = tab.linkType || 'internal';
+  if (linkType === 'external') {
+    const url = document.getElementById(`eUrl_${id}`)?.value||'';
+    if (!url.startsWith('https://')) { showToast('⚠ 外部連結必須為 https:// 開頭'); return; }
+    tab.url = url;
+    tab.method = document.getElementById(`eMethod_${id}`)?.value||'webview';
+  } else {
+    tab.page = document.getElementById(`ePage_${id}`)?.value || tab.page;
+    tab.url = '';
+  }
+  tab.name = name;
+  openId = null;
+  render();
+}
+
+// ── Toggle on/off ──────────────────────────────────────────────────────────
+function toggleTab(e, id) {
+  e.stopPropagation();
+  const tab = all().find(t => t.id === id);
+  if (!tab) return;
+  if (tab.enabled && ec() <= 1) { showToast('⚠ 至少須保留 1 個啟用的選單'); return; }
+  tab.enabled = !tab.enabled;
+  if (!tab.enabled && openId === id) openId = null;
+  render();
+}
+
+// ── Icon upload ────────────────────────────────────────────────────────────
+function handleIconUpload(event, id) {
   const file = event.target.files[0];
   if (!file) return;
   if (file.size > 200*1024) { showToast('⚠ 圖片超過 200KB，請重新選擇'); return; }
+  const isSvg = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
   const reader = new FileReader();
   reader.onload = e => {
-    const tab = allTabs().find(t => t.id === tabId);
-    if (tab) { tab.customIcon = e.target.result; selectTab(tabId); render(); }
+    const tab = all().find(t => t.id === id);
+    if (!tab) return;
+    if (isSvg) {
+      // Store raw SVG markup so we can inject fill color directly
+      let svgText = e.target.result;
+      // Normalize: ensure fill="currentColor" so makePhoneIcon can tint it
+      svgText = svgText
+        .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+        .replace(/fill='(?!none)[^']*'/g, "fill='currentColor'");
+      // If no fill attr at all, add to svg root
+      if (!svgText.includes('fill=')) {
+        svgText = svgText.replace('<svg', '<svg fill="currentColor"');
+      }
+      tab.customIcon = null;
+      tab.customSvg = svgText;
+    } else {
+      // PNG/JPG — store as dataURL, use grayscale filter for inactive
+      tab.customIcon = e.target.result;
+      tab.customSvg = null;
+    }
+    const prevBox = document.getElementById(`iconPrev_${id}`);
+    if (prevBox) {
+      prevBox.innerHTML = tab.customSvg
+        ? tab.customSvg.replace(/fill="currentColor"/g, 'fill="#555"').replace(/<svg /, '<svg width="34" height="34" style="display:block;" ')
+        : `<img src="${tab.customIcon}" style="width:34px;height:34px;object-fit:cover;border-radius:7px;">`;
+    }
+    const warn = document.getElementById(`iconWarn_${id}`);
+    if (warn) warn.style.display = 'none';
+    render();
   };
-  reader.readAsDataURL(file);
+  isSvg ? reader.readAsText(file) : reader.readAsDataURL(file);
 }
 
-function resetIcon() {
-  if (!selectedId) return;
-  const tab = allTabs().find(t => t.id === selectedId);
-  if (tab && tab.isSystem) { tab.customIcon = null; selectTab(selectedId); showToast('↩ 已恢復預設圖示'); render(); }
-}
-
-function saveTab(id) {
-  const tab = allTabs().find(t => t.id === id);
+function resetIcon(id) {
+  const tab = SYS.find(t => t.id === id);
   if (!tab) return;
-  const name = document.getElementById('editName')?.value.trim();
-  if (!name) { document.getElementById('nameErr')?.classList.add('show'); return; }
-  document.getElementById('nameErr')?.classList.remove('show');
-  if (!tab.isSystem && !tab.customIcon) { showToast('⚠ 請先上傳選單圖示'); return; }
-  if (!tab.isSystem) {
-    const url = document.getElementById('editUrl')?.value||'';
-    if (!url.startsWith('https://')) { showToast('⚠ 外部連結必須為 https:// 開頭'); return; }
-    tab.externalUrl = url;
-    tab.openMethod = document.getElementById('editOpenMethod')?.value||'webview';
-  } else {
-    tab.internalPage = document.getElementById('editPage')?.value||tab.internalPage;
-  }
-  tab.name = name;
-  showToast('✓ 已儲存至草稿');
-  selectTab(id);
+  tab.customIcon = null;
+  tab.customSvg = null;
   render();
+  showToast('↩ 已恢復預設圖示');
 }
 
-// ─── Add Custom ────────────────────────────────────────────────────────────
+// ── Add custom ─────────────────────────────────────────────────────────────
 function openAddModal() {
-  if (customTabs.length >= 5) return;
-  document.getElementById('newTabName').value = '';
-  document.getElementById('newTabNameErr').classList.remove('show');
+  if (CUST.length >= 5) return;
+  document.getElementById('newName').value = '';
+  document.getElementById('newNameErr').classList.remove('show');
   document.getElementById('addModal').classList.add('show');
-  setTimeout(() => document.getElementById('newTabName').focus(), 80);
+  setTimeout(() => document.getElementById('newName').focus(), 80);
 }
 function closeAddModal() { document.getElementById('addModal').classList.remove('show'); }
 function confirmAdd() {
-  const name = document.getElementById('newTabName').value.trim();
-  if (!name) { document.getElementById('newTabNameErr').classList.add('show'); return; }
-  const t = { id: nextId++, name, isSystem:false, iconKey:'link', enabled: enabledCount()<5, linkType:'external', externalUrl:'', openMethod:'webview', customIcon:null };
-  customTabs.push(t);
+  const name = document.getElementById('newName').value.trim();
+  if (!name) { document.getElementById('newNameErr').classList.add('show'); return; }
+  const t = { id:nextId++, name, sys:false, iconKey:'link', enabled: ec()<5, linkType:'external', page:'home', url:'', method:'webview', customIcon:null };
+  CUST.push(t);
   closeAddModal();
+  openId = t.id;
   render();
-  selectTab(t.id);
+  setTimeout(() => { document.getElementById(`panel-${t.id}`)?.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 60);
   showToast(`已新增「${name}」，請繼續設定圖示與連結`);
 }
 
-// ─── Delete ────────────────────────────────────────────────────────────────
-function openDeleteModal(e, id) {
+// ── Delete custom ──────────────────────────────────────────────────────────
+function openDelModal(e, id) {
   e.stopPropagation();
-  const tab = customTabs.find(t => t.id === id);
+  const tab = CUST.find(t => t.id === id);
   if (!tab) return;
-  pendingDeleteId = id;
-  document.getElementById('deleteModalDesc').textContent = `確定要刪除「${tab.name}」嗎？此操作無法復原。`;
-  document.getElementById('deleteModal').classList.add('show');
+  pendingDelId = id;
+  document.getElementById('delDesc').textContent = `確定要刪除「${tab.name}」嗎？此操作無法復原。`;
+  document.getElementById('delModal').classList.add('show');
 }
-function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); pendingDeleteId=null; }
-function confirmDelete() {
-  if (!pendingDeleteId) return;
-  const tab = customTabs.find(t => t.id === pendingDeleteId);
-  customTabs = customTabs.filter(t => t.id !== pendingDeleteId);
-  if (selectedId === pendingDeleteId) cancelEdit();
-  closeDeleteModal();
+function closeDelModal() { document.getElementById('delModal').classList.remove('show'); pendingDelId=null; }
+function confirmDel() {
+  if (!pendingDelId) return;
+  const tab = CUST.find(t => t.id === pendingDelId);
+  CUST = CUST.filter(t => t.id !== pendingDelId);
+  if (openId === pendingDelId) openId = null;
+  closeDelModal();
   render();
   showToast(`已刪除「${tab?.name||'選單'}」`);
 }
 
-// ─── Phone Preview ─────────────────────────────────────────────────────────
-function renderPhone() {
-  const bar = document.getElementById('phoneTabBar');
-  bar.innerHTML = '';
-  const active = enabledTabs();
-  const midIdx = Math.floor(active.length / 2);
-  active.forEach((tab, i) => {
-    const div = document.createElement('div');
-    div.className = `phone-tab${i === midIdx ? ' act' : ''}`;
-    const ic = tab.customIcon
-      ? `<img src="${tab.customIcon}" style="width:17px;height:17px;object-fit:cover;border-radius:3px;">`
-      : (ICONS[tab.iconKey] || ICONS.link);
-    div.innerHTML = `<div class="phone-tab-svg">${ic}</div><div class="phone-tab-lbl">${tab.name}</div>`;
-    bar.appendChild(div);
+// ── Drag & drop ────────────────────────────────────────────────────────────
+function setupDrag(row, tab, group) {
+  row.draggable = true;
+  row.addEventListener('dragstart', e => { dragSrcId = tab.id; dragSrcGroup = group; e.dataTransfer.effectAllowed='move'; setTimeout(()=>row.classList.add('drag-ghost'),0); });
+  row.addEventListener('dragend', () => { row.classList.remove('drag-ghost'); document.querySelectorAll('.tab-row').forEach(r=>r.classList.remove('drag-over')); });
+  row.addEventListener('dragover', e => { e.preventDefault(); if (dragSrcGroup!==group) return; e.dataTransfer.dropEffect='move'; document.querySelectorAll('.tab-row').forEach(r=>r.classList.remove('drag-over')); if (tab.id!==dragSrcId) row.classList.add('drag-over'); });
+  row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+  row.addEventListener('drop', e => {
+    e.preventDefault(); row.classList.remove('drag-over');
+    if (dragSrcGroup!==group || dragSrcId===tab.id) return;
+    const arr = group==='sys' ? SYS : CUST;
+    const fi = arr.findIndex(t=>t.id===dragSrcId), ti = arr.findIndex(t=>t.id===tab.id);
+    if (fi<0||ti<0) return;
+    const [m] = arr.splice(fi,1); arr.splice(ti,0,m);
+    dragSrcId=null; dragSrcGroup=null;
+    render();
   });
-  const ec = active.length;
-  document.getElementById('enabledCounter').innerHTML = `<strong>${ec}</strong> / 5 個選單啟用中`;
 }
 
-// ─── Color Picker ──────────────────────────────────────────────────────────
-(function initColorPicker() {
-  const canvas = document.getElementById('spectrumCanvas');
-  const ctx = canvas.getContext('2d');
-  const hueSlider = document.getElementById('hueSlider');
-  const swatch = document.getElementById('colorSwatch');
-  const hexInput = document.getElementById('colorHexInput');
-  let hue = 0, pickX = 10, pickY = canvas.height - 10;
+// ── Phone preview ──────────────────────────────────────────────────────────
+// ── Drag & drop ────────────────────────────────────────────────────────────
+function setupDrag(row, tab, group) {
+  row.draggable = true;
+  row.addEventListener('dragstart', e => { dragSrcId = tab.id; dragSrcGroup = group; e.dataTransfer.effectAllowed='move'; setTimeout(()=>row.classList.add('drag-ghost'),0); });
+  row.addEventListener('dragend', () => { row.classList.remove('drag-ghost'); document.querySelectorAll('.tab-row').forEach(r=>r.classList.remove('drag-over')); });
+  row.addEventListener('dragover', e => { e.preventDefault(); if (dragSrcGroup!==group) return; e.dataTransfer.dropEffect='move'; document.querySelectorAll('.tab-row').forEach(r=>r.classList.remove('drag-over')); if (tab.id!==dragSrcId) row.classList.add('drag-over'); });
+  row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+  row.addEventListener('drop', e => {
+    e.preventDefault(); row.classList.remove('drag-over');
+    if (dragSrcGroup!==group || dragSrcId===tab.id) return;
+    const arr = group==='sys' ? SYS : CUST;
+    const fi = arr.findIndex(t=>t.id===dragSrcId), ti = arr.findIndex(t=>t.id===tab.id);
+    if (fi<0||ti<0) return;
+    const [m] = arr.splice(fi,1); arr.splice(ti,0,m);
+    dragSrcId=null; dragSrcGroup=null;
+    render();
+  });
+}
 
-  function drawSpectrum() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const gradH = ctx.createLinearGradient(0,0,canvas.width,0);
-    gradH.addColorStop(0,'#fff');
-    gradH.addColorStop(1,`hsl(${hue},100%,50%)`);
-    ctx.fillStyle = gradH;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    const gradV = ctx.createLinearGradient(0,0,0,canvas.height);
-    gradV.addColorStop(0,'rgba(0,0,0,0)');
-    gradV.addColorStop(1,'#000');
-    ctx.fillStyle = gradV;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.beginPath();
-    ctx.arc(pickX,pickY,6,0,2*Math.PI);
-    ctx.strokeStyle='#fff';
-    ctx.lineWidth=2;
-    ctx.stroke();
+
+// ── Phone icon renderer ───────────────────────────────────────────────────
+function makePhoneIcon(tab, isActive) {
+  // Custom uploaded SVG
+  if (tab.customSvg) {
+    const col = isActive ? '#333' : '#AAAAAA';
+    const svg = tab.customSvg
+      .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+      .replace(/stroke="(?!none)[^"]*"/g, 'stroke="currentColor"')
+      .replace(/<svg /, '<svg width="22" height="22" ');
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;color:${col};">${svg}</span>`;
+  }
+  // Custom uploaded PNG/JPG
+  if (tab.customIcon) {
+    return `<img src="${tab.customIcon}" style="width:22px;height:22px;object-fit:contain;opacity:${isActive?'1':'0.4'};">`;
+  }
+  // System icon — line style, dark when active, grey when inactive
+  const col = isActive ? '#444' : '#AAAAAA';
+  const base = ICONS_LINE[tab.iconKey] || ICONS_LINE.link;
+  return base
+    .replace(/stroke="currentColor"/g, `stroke="${col}"`)
+    .replace(/<svg /, '<svg width="22" height="22" ');
+}
+
+function renderPhone() {
+  const bar = document.getElementById('phoneTabbar');
+  const moreMenu = document.getElementById('phoneMoreMenu');
+  bar.innerHTML = '';
+  moreMenu.innerHTML = '';
+  moreMenu.classList.remove('open');
+
+  const active = enabled();
+  const LIMIT = 5;
+  const hasMore = active.length > LIMIT;
+  // When >5: show first 4 + "更多", overflow goes into more menu
+  const visible  = hasMore ? active.slice(0, LIMIT - 1) : active;
+  const overflow = hasMore ? active.slice(LIMIT - 1)    : [];
+  const mid = Math.floor(visible.length / 2);
+
+  visible.forEach((tab, i) => {
+    const isAct = i === mid;
+    const div = document.createElement('div');
+    div.className = `p-tab${isAct ? ' act' : ''}`;
+    div.innerHTML = `<div class="p-tab-icon">${makePhoneIcon(tab, isAct)}</div><div class="p-tab-lbl">${tab.name}</div>`;
+    bar.appendChild(div);
+  });
+
+  if (hasMore) {
+    // "更多" tab
+    const moreTab = document.createElement('div');
+    moreTab.className = 'p-tab';
+    moreTab.style.cursor = 'pointer';
+    const moreIconSvg = (ICONS_LINE.more || ICONS_LINE.link)
+      .replace(/stroke="currentColor"/g, 'stroke="#AAAAAA"')
+      .replace(/<svg /, '<svg width="22" height="22" ');
+    moreTab.innerHTML = `
+      <div class="p-tab-icon">${moreIconSvg}</div>
+      <div class="p-tab-lbl">更多</div>`;
+    moreTab.onclick = () => moreMenu.classList.toggle('open');
+    bar.appendChild(moreTab);
+
+    // Build more menu items
+    overflow.forEach(tab => {
+      const item = document.createElement('div');
+      item.className = 'phone-more-item';
+      const ic = tab.customIcon
+        ? `<img src="${tab.customIcon}" style="width:14px;height:14px;object-fit:cover;border-radius:2px;">`
+        : (ICONS[tab.iconKey] || ICONS.link).replace('width: 16px', 'width:14px').replace('height: 16px','height:14px');
+      item.innerHTML = `${ic} ${tab.name}`;
+      moreMenu.appendChild(item);
+    });
+    const cancel = document.createElement('div');
+    cancel.className = 'phone-more-cancel';
+    cancel.textContent = '取消';
+    cancel.onclick = () => moreMenu.classList.remove('open');
+    moreMenu.appendChild(cancel);
   }
 
-  function pickColor(x,y) {
-    pickX = Math.max(0,Math.min(x,canvas.width));
-    pickY = Math.max(0,Math.min(y,canvas.height));
-    const px = ctx.getImageData(pickX,pickY,1,1).data;
-    const hex = '#'+[px[0],px[1],px[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
-    swatch.style.background = hex;
-    hexInput.value = '# '+hex.slice(1).toUpperCase();
-    drawSpectrum();
+  // Counter below phone
+  const total = active.length;
+  const overCount = hasMore ? overflow.length : 0;
+  let countHTML = `<strong>${total}</strong> / 全部 ${all().length} 個選單`;
+  if (hasMore) countHTML += ` <span style="color:#E67E22;font-size:10px;">（${overCount} 個折入「更多」）</span>`;
+  document.getElementById('enabledCount').innerHTML = countHTML;
+}
+
+// ── Color picker ───────────────────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('specCanvas');
+  const ctx = canvas.getContext('2d');
+  const hueSl = document.getElementById('hueSlider');
+  const swatch = document.getElementById('colorSwatch');
+  const hexIn  = document.getElementById('colorHex');
+  let hue = 120, px = 50, py = 30;
+
+  function draw() {
+    ctx.clearRect(0,0,160,120);
+    const gH = ctx.createLinearGradient(0,0,160,0);
+    gH.addColorStop(0,'#fff'); gH.addColorStop(1,`hsl(${hue},100%,50%)`);
+    ctx.fillStyle=gH; ctx.fillRect(0,0,160,120);
+    const gV = ctx.createLinearGradient(0,0,0,120);
+    gV.addColorStop(0,'rgba(0,0,0,0)'); gV.addColorStop(1,'#000');
+    ctx.fillStyle=gV; ctx.fillRect(0,0,160,120);
+    ctx.beginPath(); ctx.arc(px,py,6,0,2*Math.PI);
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+  }
+
+  function pick(x,y) {
+    px=Math.max(0,Math.min(x,160)); py=Math.max(0,Math.min(y,120));
+    const d=ctx.getImageData(px,py,1,1).data;
+    const hex='#'+[d[0],d[1],d[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
+    swatch.style.background=hex;
+    hexIn.value='# '+hex.slice(1).toUpperCase();
+    draw();
   }
 
   canvas.addEventListener('mousedown', e => {
-    const r = canvas.getBoundingClientRect();
-    const sx = canvas.width / r.width, sy = canvas.height / r.height;
-    const move = ev => pickColor((ev.clientX-r.left)*sx,(ev.clientY-r.top)*sy);
-    move(e);
-    const up = () => { window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); };
-    window.addEventListener('mousemove',move);
-    window.addEventListener('mouseup',up);
+    const r=canvas.getBoundingClientRect(), sx=160/r.width, sy=120/r.height;
+    const mv = ev=>pick((ev.clientX-r.left)*sx,(ev.clientY-r.top)*sy);
+    mv(e);
+    const up=()=>{window.removeEventListener('mousemove',mv);window.removeEventListener('mouseup',up);};
+    window.addEventListener('mousemove',mv); window.addEventListener('mouseup',up);
   });
+  hueSl.addEventListener('input',()=>{hue=+hueSl.value; draw(); pick(px,py);});
+  hexIn.addEventListener('change',()=>{ const v=hexIn.value.replace(/[^0-9a-fA-F]/g,''); if(v.length===6){swatch.style.background='#'+v; hexIn.value='# '+v.toUpperCase();}});
 
-  hueSlider.addEventListener('input', () => {
-    hue = parseInt(hueSlider.value);
-    drawSpectrum();
-    pickColor(pickX,pickY);
-  });
-
-  hexInput.addEventListener('change', () => {
-    const v = hexInput.value.replace(/[^0-9a-fA-F]/g,'');
-    if (v.length===6) { swatch.style.background='#'+v; hexInput.value='# '+v.toUpperCase(); }
-  });
-
-  drawSpectrum();
+  draw(); pick(px,py);
 })();
 
-// ─── Publish / Draft ───────────────────────────────────────────────────────
-function saveDraft() { showToast('草稿已儲存'); }
-function openPublishModal() { document.getElementById('publishModal').classList.add('show'); }
-function closePublishModal() { document.getElementById('publishModal').classList.remove('show'); }
-function confirmPublish() { closePublishModal(); showToast('已發布！前台將於 30 秒內更新'); }
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+// ── Sub-tab switch ─────────────────────────────────────────────────────────
+function switchTab(id, el) {
+  document.querySelectorAll('.subtab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pane-'+id).classList.add('active');
 }
 
-// ─── Init ──────────────────────────────────────────────────────────────────
+// ── Save ───────────────────────────────────────────────────────────────────
+function doSave() { showToast('已儲存，前台立即更新'); }
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
 render();
 </script>
 </body>

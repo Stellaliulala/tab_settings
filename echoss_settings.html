@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系統設定｜Echoss VIP</title>
+<style>
+/* ── Reset & Base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', sans-serif;
+  background: #F7F7F7;
+  color: #222;
+  font-size: 14px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────────── */
+.topbar {
+  height: 52px;
+  background: #fff;
+  border-bottom: 1px solid #E8E8E8;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #222;
+}
+.topbar-brand-dot {
+  width: 28px; height: 28px;
+  background: #27AE60;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 13px; font-weight: 800;
+}
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.lang-select {
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #555;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+.avatar {
+  width: 30px; height: 30px;
+  background: #27AE60;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 13px; font-weight: 700;
+}
+
+/* ── App layout ──────────────────────────────────────────────────── */
+.app-body { display: flex; flex: 1; min-height: 0; }
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+.sidebar {
+  width: 180px;
+  background: #fff;
+  border-right: 1px solid #EBEBEB;
+  padding: 16px 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+.sidebar-toggle {
+  position: absolute;
+  top: 66px;
+  left: 168px;
+  width: 20px; height: 36px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #AAA;
+  z-index: 10;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-radius: 0;
+  white-space: nowrap;
+}
+.nav-item:hover { background: #F5F5F5; }
+.nav-item.active { color: #27AE60; background: #F0FBF4; font-weight: 600; }
+.nav-icon { font-size: 14px; flex-shrink: 0; opacity: 0.7; }
+.nav-item.active .nav-icon { opacity: 1; }
+
+/* ── Main content ────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+}
+.page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* ── Sub-tabs ────────────────────────────────────────────────────── */
+.subtabs {
+  display: flex;
+  border-bottom: 2px solid #EBEBEB;
+  margin-bottom: 28px;
+  gap: 0;
+}
+.subtab {
+  padding: 9px 18px;
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  font-weight: 500;
+}
+.subtab:hover { color: #444; }
+.subtab.active { color: #27AE60; border-bottom-color: #27AE60; font-weight: 600; }
+
+/* ── Tab content panels ──────────────────────────────────────────── */
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── Two-col layout for 配色與選單 ───────────────────────────────── */
+.settings-cols {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.card:last-child { margin-bottom: 0; }
+.card-header {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #F2F2F2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-hint { font-size: 11px; color: #BBB; }
+.card-body { padding: 16px 18px; }
+
+/* ── Color picker section ────────────────────────────────────────── */
+.color-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.color-picker-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.color-spectrum {
+  width: 160px; height: 120px;
+  border-radius: 6px;
+  position: relative;
+  cursor: crosshair;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.color-spectrum canvas { display: block; width: 100%; height: 100%; }
+.hue-slider-wrap { width: 160px; }
+.hue-slider {
+  -webkit-appearance: none;
+  width: 100%; height: 12px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+.hue-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #555;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+.color-hex-row {
+  display: flex; align-items: center; gap: 8px; width: 160px;
+}
+.color-preview-swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid #E0E0E0;
+  flex-shrink: 0;
+}
+.color-hex-input {
+  flex: 1;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  color: #333;
+  background: #FAFAFA;
+  outline: none;
+}
+.color-hex-input:focus { border-color: #27AE60; background: #fff; }
+.color-desc {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.6;
+  padding-top: 4px;
+}
+
+/* ── Instruction list ────────────────────────────────────────────── */
+.instr-list { list-style: none; padding: 0; }
+.instr-list li {
+  font-size: 12px;
+  color: #666;
+  padding: 5px 0;
+  border-bottom: 1px dashed #F0F0F0;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  line-height: 1.5;
+}
+.instr-list li:last-child { border-bottom: none; }
+.instr-list li::before {
+  content: attr(data-marker);
+  flex-shrink: 0;
+  color: #27AE60;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ── Tab management ──────────────────────────────────────────────── */
+.section-divider {
+  font-size: 11px;
+  font-weight: 700;
+  color: #AAA;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-divider::after { content: ''; flex: 1; height: 1px; background: #F0F0F0; }
+
+.tab-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: #fff;
+  transition: box-shadow 0.12s;
+  cursor: default;
+}
+.tab-row:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+.tab-row.selected { border-color: #27AE60; background: #F5FBF7; box-shadow: 0 0 0 2px rgba(39,174,96,0.12); }
+.tab-row.tab-disabled { opacity: 0.45; background: #FAFAFA; }
+.tab-row.tab-custom { border-style: dashed; }
+
+.drag-handle {
+  color: #CCC; font-size: 14px; cursor: grab; user-select: none; flex-shrink: 0;
+  line-height: 1;
+}
+.tab-icon-box {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  background: #F4F4F4;
+  border: 1px solid #E8E8E8;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: #444; overflow: hidden;
+}
+.tab-icon-box svg { width: 16px; height: 16px; }
+.tab-icon-box img { width: 30px; height: 30px; object-fit: cover; }
+
+.tab-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab-url-hint {
+  font-size: 10px;
+  color: #BBB;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.badge {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.badge-sys { background: #F0F0F0; color: #999; }
+.badge-custom { background: #EBF9F1; color: #27AE60; }
+.badge-ext { background: #FFF4E6; color: #E67E22; }
+.badge-off { background: #F5F5F5; color: #BBB; }
+
+.toggle {
+  width: 32px; height: 18px;
+  background: #E0E0E0;
+  border-radius: 18px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.18s;
+  border: none; outline: none;
+  flex-shrink: 0;
+}
+.toggle.on { background: #27AE60; }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle.on::after { transform: translateX(14px); }
+
+.icon-btn {
+  width: 26px; height: 26px;
+  border: 1px solid #E8E8E8;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: #888;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.icon-btn:hover { border-color: #27AE60; color: #27AE60; }
+.icon-btn-del { border-color: #FFDDDD; color: #E74C3C; }
+.icon-btn-del:hover { background: #FFF5F5; border-color: #E74C3C; }
+
+/* Add tab button */
+.add-tab-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1.5px dashed #27AE60;
+  border-radius: 8px;
+  background: #F5FBF7;
+  color: #27AE60;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+  margin-bottom: 6px;
+  font-family: inherit;
+  width: 100%;
+}
+.add-tab-row:hover { background: #EBF7F2; }
+.add-tab-row:disabled { opacity: 0.4; cursor: not-allowed; }
+.add-tab-count { margin-left: auto; font-weight: 400; color: #AAA; font-size: 11px; }
+
+/* Hidden tabs area */
+.hidden-drop-zone {
+  min-height: 42px;
+  border: 1.5px dashed #E0E0E0;
+  border-radius: 8px;
+  padding: 8px;
+  background: #FAFAFA;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.hidden-drop-zone.empty::after {
+  content: '將 Tab 的開關關閉後會出現在此區塊';
+  font-size: 11px;
+  color: #CCC;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Edit side panel ─────────────────────────────────────────────── */
+.edit-side {
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 10px;
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
+}
+.edit-side-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F2F2F2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.edit-side-title { font-size: 13px; font-weight: 700; color: #333; }
+.edit-side-body { padding: 16px; }
+
+.form-group { margin-bottom: 14px; }
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.req { color: #E74C3C; }
+.form-input {
+  width: 100%;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #333;
+  background: #FAFAFA;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.12s;
+}
+.form-input:focus { border-color: #27AE60; background: #fff; }
+.form-input.err { border-color: #E74C3C; background: #FFF5F5; }
+
+.char-count { font-size: 11px; color: #CCC; text-align: right; margin-top: 2px; }
+.char-count.warn { color: #E67E22; }
+.err-msg { font-size: 11px; color: #E74C3C; margin-top: 3px; display: none; }
+.err-msg.show { display: block; }
+
+.link-type-row { display: flex; gap: 6px; margin-bottom: 8px; }
+.link-type-btn {
+  flex: 1; padding: 7px;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  background: #FAFAFA;
+  font-size: 11px; font-weight: 600; color: #888;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: inherit;
+}
+.link-type-btn.active { border-color: #27AE60; background: #F0FBF4; color: #27AE60; }
+
+/* Icon upload */
+.icon-upload-zone {
+  border: 1.5px dashed #DDD;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  background: #FAFAFA;
+}
+.icon-upload-zone:hover { border-color: #27AE60; background: #F5FBF7; }
+.icon-upload-row { display: flex; align-items: center; gap: 10px; }
+.icon-preview {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: #F0F0F0;
+  display: flex; align-items: center; justify-content: center;
+  color: #666; flex-shrink: 0; overflow: hidden;
+}
+.icon-preview svg { width: 22px; height: 22px; }
+.icon-preview img { width: 38px; height: 38px; object-fit: cover; }
+.icon-upload-text { font-size: 12px; color: #666; }
+.icon-upload-spec { font-size: 10px; color: #BBB; margin-top: 2px; }
+.icon-upload-warn { font-size: 10px; color: #E67E22; margin-top: 2px; display: none; }
+.icon-badge { font-size: 10px; color: #4A90E2; margin-top: 1px; }
+
+.reset-btn {
+  width: 100%;
+  padding: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  background: #fff;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+  font-family: inherit;
+  transition: border-color 0.12s;
+}
+.reset-btn:hover { border-color: #999; color: #444; }
+
+.edit-actions { display: flex; gap: 8px; margin-top: 16px; }
+.btn {
+  padding: 9px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.btn-ghost { background: #fff; border: 1px solid #DDD; color: #666; }
+.btn-ghost:hover { border-color: #999; color: #333; }
+.btn-green { background: #27AE60; color: #fff; }
+.btn-green:hover { background: #219A52; }
+.btn-red { background: #E74C3C; color: #fff; }
+
+.empty-edit-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: #CCC;
+  font-size: 12px;
+}
+
+input[type="file"] { display: none; }
+
+/* ── Preview phone ────────────────────────────────────────────────── */
+.phone-outer {
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.phone-outer-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F2F2F2;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+.phone-outer-body { padding: 16px; }
+
+.phone-frame {
+  width: 200px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 28px;
+  border: 5px solid #2A2A2A;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+}
+.phone-notch { background: #2A2A2A; height: 18px; border-radius: 0 0 10px 10px; width: 64px; margin: 0 auto; }
+.phone-screen { background: #F5F5F5; min-height: 260px; display: flex; flex-direction: column; }
+.phone-body-content { flex: 1; display: flex; align-items: center; justify-content: center; }
+.phone-placeholder { text-align: center; color: #DDD; font-size: 11px; }
+.phone-tab-bar {
+  display: flex;
+  background: #fff;
+  border-top: 0.5px solid #E8E8E8;
+  padding: 5px 0 8px;
+}
+.phone-tab {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 2px;
+  opacity: 0.35;
+  transition: opacity 0.15s;
+}
+.phone-tab.act { opacity: 1; }
+.phone-tab-svg { width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; }
+.phone-tab-svg svg { width: 17px; height: 17px; stroke: #555; }
+.phone-tab.act .phone-tab-svg svg { stroke: #27AE60; }
+.phone-tab-lbl { font-size: 8px; color: #555; font-weight: 500; text-align: center; max-width: 32px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.phone-tab.act .phone-tab-lbl { color: #27AE60; font-weight: 700; }
+
+.enabled-counter {
+  text-align: center;
+  font-size: 11px;
+  color: #AAA;
+  margin-top: 10px;
+}
+.enabled-counter strong { color: #27AE60; }
+
+/* ── Bottom save bar ─────────────────────────────────────────────── */
+.save-bar {
+  background: #fff;
+  border-top: 1px solid #EBEBEB;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.save-bar-hint { font-size: 12px; color: #AAA; }
+.save-bar-actions { display: flex; gap: 10px; }
+.btn-save-draft { background: #fff; border: 1px solid #DDD; color: #666; }
+.btn-save-draft:hover { border-color: #27AE60; color: #27AE60; }
+.btn-publish { background: #27AE60; color: #fff; }
+.btn-publish:hover { background: #219A52; }
+
+/* ── Modal ───────────────────────────────────────────────────────── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: none; align-items: center; justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(2px);
+}
+.overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 340px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+}
+.modal-title { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 8px; }
+.modal-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 18px; }
+.modal-field { margin-bottom: 10px; }
+.modal-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; display: block; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: #1A2035;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 999;
+  transition: transform 0.28s cubic-bezier(.22,.68,0,1.2);
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Other tabs placeholder ──────────────────────────────────────── */
+.placeholder-pane {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.placeholder-row {
+  height: 44px;
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+}
+.placeholder-block {
+  background: #F7F7F7;
+  border-radius: 8px;
+  padding: 28px;
+  text-align: center;
+  color: #CCC;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-brand-dot">E</div>
+    Echoss VIP
+  </div>
+  <div class="topbar-right">
+    <select class="lang-select">
+      <option>語系切換</option>
+      <option>繁體中文</option>
+      <option>English</option>
+    </select>
+    <div class="avatar">A</div>
+  </div>
+</div>
+
+<div class="app-body">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="nav-item"><span class="nav-icon">⊞</span> 功能模組</div>
+    <div class="nav-item"><span class="nav-icon">📊</span> 會員分析</div>
+    <div class="nav-item"><span class="nav-icon">👤</span> 會員資料</div>
+    <div class="nav-item"><span class="nav-icon">🏷</span> 帳號管理</div>
+    <div class="nav-item"><span class="nav-icon">🏪</span> 門市管理</div>
+    <div class="nav-item active"><span class="nav-icon">⚙️</span> 系統設定</div>
+    <div class="nav-item"><span class="nav-icon">⬇</span> 下載區</div>
+    <div class="nav-item"><span class="nav-icon">📖</span> 使用手冊</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="page-title">系統設定</div>
+
+    <!-- Sub-tabs -->
+    <div class="subtabs">
+      <div class="subtab active" onclick="switchSubtab('appearance', this)">配色與選單</div>
+      <div class="subtab" onclick="switchSubtab('membercard', this)">會員卡設定</div>
+      <div class="subtab" onclick="switchSubtab('transaction', this)">交易 / 點數紀錄匯入</div>
+    </div>
+
+    <!-- ────── Appearance Tab ────── -->
+    <div class="tab-pane active" id="pane-appearance">
+      <div class="settings-cols">
+
+        <!-- LEFT column -->
+        <div>
+
+          <!-- 介面配色 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">🎨 介面配色</span>
+            </div>
+            <div class="card-body">
+              <div class="color-row">
+                <div class="color-picker-wrap">
+                  <div class="color-spectrum" id="colorSpectrum">
+                    <canvas id="spectrumCanvas" width="160" height="120"></canvas>
+                  </div>
+                  <div class="hue-slider-wrap">
+                    <input type="range" class="hue-slider" id="hueSlider" min="0" max="360" value="0">
+                  </div>
+                  <div class="color-hex-row">
+                    <div class="color-preview-swatch" id="colorSwatch" style="background:#000000;"></div>
+                    <input type="text" class="color-hex-input" id="colorHexInput" value="# 000000" maxlength="9">
+                  </div>
+                </div>
+                <div class="color-desc">
+                  選擇的顏色將套用在 App 前台的主題色，包含按鈕、Active 狀態、標示色等。
+                  <br><br>
+                  建議選擇品牌主色，深色效果較佳。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 選單管理 -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">📱 底部選單管理</span>
+              <span class="card-hint" id="enabledHint">啟用中 — / 5</span>
+            </div>
+            <div class="card-body" style="padding-bottom:12px;">
+
+              <div class="instr-list" style="margin-bottom:14px;">
+                <ul class="instr-list">
+                  <li data-marker="①">長按下方任一選單，即可<strong>拖拉排序</strong></li>
+                  <li data-marker="②">關閉開關可隱藏選單，隱藏的項目會移至「不顯示於前台」區塊</li>
+                  <li data-marker="③">啟用中的選單超過 5 個時，系統將自動出現「<strong>更多</strong>」選單</li>
+                  <li data-marker="④">「更多」選單不可排序，其內容也可以拖拉排序</li>
+                  <li data-marker="⑤">自訂 Tab 可新增外部連結，不會替換現有的系統選單</li>
+                </ul>
+              </div>
+
+              <!-- System tabs -->
+              <div class="section-divider">系統選單</div>
+              <div id="systemTabList"></div>
+
+              <!-- Custom tabs -->
+              <div class="section-divider" style="margin-top:10px;">自訂選單</div>
+              <div id="customTabList"></div>
+              <button class="add-tab-row" id="addTabBtn" onclick="openAddModal()">
+                <span style="font-size:15px;">＋</span>
+                新增自訂選單（外部連結）
+                <span class="add-tab-count" id="addTabCount"></span>
+              </button>
+
+              <!-- Hidden zone -->
+              <div style="margin-top:14px;">
+                <div class="section-divider">不顯示於前台</div>
+                <div class="hidden-drop-zone" id="hiddenZone"></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT column -->
+        <div>
+
+          <!-- Phone preview -->
+          <div class="phone-outer">
+            <div class="phone-outer-header">📱 前台預覽</div>
+            <div class="phone-outer-body">
+              <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="phone-body-content">
+                    <div class="phone-placeholder">
+                      <div style="font-size:24px;margin-bottom:6px;">🃏</div>
+                      <div>會員卡頁面</div>
+                    </div>
+                  </div>
+                  <div class="phone-tab-bar" id="phoneTabBar"></div>
+                </div>
+              </div>
+              <div class="enabled-counter" id="enabledCounter"></div>
+            </div>
+          </div>
+
+          <!-- Edit panel (sticky) -->
+          <div class="edit-side" id="editSide">
+            <div class="edit-side-header">
+              <span class="edit-side-title" id="editSideTitle">選單設定</span>
+              <span style="font-size:11px;color:#CCC;" id="editSideSubtitle"></span>
+            </div>
+            <div class="edit-side-body" id="editSideBody">
+              <div class="empty-edit-state">
+                <div style="font-size:24px;margin-bottom:8px;">👈</div>
+                點選左側選單項目開始編輯
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- end pane-appearance -->
+
+    <!-- ────── Other Tabs (placeholder) ────── -->
+    <div class="tab-pane" id="pane-membercard">
+      <div class="placeholder-pane">
+        <div class="placeholder-row"></div>
+        <div class="placeholder-row"></div>
+        <div class="placeholder-block">會員卡設定內容</div>
+      </div>
+    </div>
+    <div class="tab-pane" id="pane-transaction">
+      <div class="placeholder-pane">
+        <div class="placeholder-row"></div>
+        <div class="placeholder-block">交易 / 點數紀錄匯入內容</div>
+      </div>
+    </div>
+
+  </div><!-- end .main -->
+</div><!-- end .app-body -->
+
+<!-- Save bar -->
+<div class="save-bar">
+  <span class="save-bar-hint">ℹ 目前為草稿版本，點擊「發布」後才會套用至前台</span>
+  <div class="save-bar-actions">
+    <button class="btn btn-save-draft" onclick="saveDraft()">儲存草稿</button>
+    <button class="btn btn-publish" onclick="openPublishModal()">發布</button>
+  </div>
+</div>
+
+<!-- Add modal -->
+<div class="overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title">新增自訂選單</div>
+    <div class="modal-desc">自訂選單只能連結至外部網址（https://），且須自行上傳圖示。</div>
+    <div class="modal-field">
+      <label class="modal-label">選單名稱 <span style="color:#E74C3C;">*</span></label>
+      <input type="text" class="form-input" id="newTabName" placeholder="最多 4 個中文字" maxlength="8">
+      <div class="err-msg" id="newTabNameErr">請輸入名稱</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddModal()">取消</button>
+      <button class="btn btn-green" onclick="confirmAdd()">新增</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete modal -->
+<div class="overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-title">刪除自訂選單</div>
+    <div class="modal-desc" id="deleteModalDesc"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">取消</button>
+      <button class="btn btn-red" onclick="confirmDelete()">確認刪除</button>
+    </div>
+  </div>
+</div>
+
+<!-- Publish modal -->
+<div class="overlay" id="publishModal">
+  <div class="modal">
+    <div class="modal-title">確認發布</div>
+    <div class="modal-desc">發布後，前台底部選單將於 <strong>30 秒內</strong>更新為最新設定。<br>確定要發布嗎？</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePublishModal()">取消</button>
+      <button class="btn btn-green" onclick="confirmPublish()">確認發布</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── SVG Icons ─────────────────────────────────────────────────────────────
+const ICONS = {
+  home:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H5a1 1 0 01-1-1V10.5z"/><path d="M9 22V12h6v10"/></svg>`,
+  membercard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M7 15h3"/><path d="M14 15h3"/></svg>`,
+  voucher:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18"/><path d="M9 4v5"/><path d="M15 4v5"/><path d="M7 14h2"/><path d="M11 14h6"/><path d="M7 17h4"/></svg>`,
+  memberzone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`,
+  more:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>`,
+  shop:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16l1.5 6H2.5L4 3z"/><path d="M2.5 9v11a1 1 0 001 1h17a1 1 0 001-1V9"/><path d="M9 9v2a3 3 0 006 0V9"/></svg>`,
+  pointcard:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M7 6V4a1 1 0 011-1h8a1 1 0 011 1v2"/><circle cx="12" cy="13" r="2.5"/><path d="M8.5 13h-2"/><path d="M17.5 13h-2"/></svg>`,
+  link:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
+};
+
+function iconHTML(key, customSrc) {
+  if (customSrc) return `<img src="${customSrc}">`;
+  return ICONS[key] || ICONS.link;
+}
+
+// ─── Data ──────────────────────────────────────────────────────────────────
+const SYS_TABS = [
+  { id:1, name:'商店',     isSystem:true, iconKey:'shop',       enabled:true,  linkType:'internal', internalPage:'shop',       customIcon:null },
+  { id:2, name:'首頁',     isSystem:true, iconKey:'home',       enabled:true,  linkType:'internal', internalPage:'home',       customIcon:null },
+  { id:3, name:'會員卡',   isSystem:true, iconKey:'membercard', enabled:true,  linkType:'internal', internalPage:'membercard', customIcon:null },
+  { id:4, name:'會員專區', isSystem:true, iconKey:'memberzone', enabled:true,  linkType:'internal', internalPage:'memberzone', customIcon:null },
+  { id:5, name:'票券',     isSystem:true, iconKey:'voucher',    enabled:false, linkType:'internal', internalPage:'voucher',    customIcon:null },
+  { id:6, name:'集點卡',   isSystem:true, iconKey:'pointcard',  enabled:false, linkType:'internal', internalPage:'pointcard',  customIcon:null },
+];
+let customTabs = [];
+let nextId = 100;
+let selectedId = null;
+let pendingDeleteId = null;
+
+function allTabs() { return [...SYS_TABS, ...customTabs]; }
+function enabledTabs() { return allTabs().filter(t => t.enabled); }
+function enabledCount() { return enabledTabs().length; }
+
+// ─── Sub-tab switch ────────────────────────────────────────────────────────
+function switchSubtab(id, el) {
+  document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pane-' + id).classList.add('active');
+}
+
+// ─── Render Tab Lists ──────────────────────────────────────────────────────
+function render() {
+  const ec = enabledCount();
+  document.getElementById('enabledHint').textContent = `啟用中 ${ec} / 5`;
+
+  // System tabs
+  const sl = document.getElementById('systemTabList');
+  sl.innerHTML = '';
+  SYS_TABS.forEach(t => sl.appendChild(makeRow(t)));
+
+  // Custom tabs
+  const cl = document.getElementById('customTabList');
+  cl.innerHTML = '';
+  if (customTabs.length === 0) {
+    cl.innerHTML = '<div style="font-size:11px;color:#CCC;padding:4px 4px 8px;text-align:center;">尚未新增自訂選單</div>';
+  } else {
+    customTabs.forEach(t => cl.appendChild(makeRow(t)));
+  }
+
+  // Add button
+  const rem = 5 - customTabs.length;
+  const btn = document.getElementById('addTabBtn');
+  btn.disabled = customTabs.length >= 5;
+  document.getElementById('addTabCount').textContent = `最多可再新增 ${Math.max(0,rem)} 個`;
+
+  // Hidden zone
+  const hz = document.getElementById('hiddenZone');
+  const hidden = allTabs().filter(t => !t.enabled);
+  if (hidden.length === 0) {
+    hz.innerHTML = '';
+    hz.classList.add('empty');
+  } else {
+    hz.classList.remove('empty');
+    hz.innerHTML = hidden.map(t => `
+      <div style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #E8E8E8;border-radius:6px;padding:5px 8px;font-size:11px;color:#888;">
+        <span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:#AAA;">${iconHTML(t.iconKey,t.customIcon)}</span>
+        ${t.name}
+      </div>`).join('');
+  }
+
+  renderPhone();
+}
+
+function makeRow(tab) {
+  const div = document.createElement('div');
+  div.className = `tab-row${tab.id === selectedId ? ' selected' : ''}${!tab.enabled ? ' tab-disabled' : ''}${!tab.isSystem ? ' tab-custom' : ''}`;
+
+  const kindBadge = tab.isSystem
+    ? `<span class="badge badge-sys">系統</span>`
+    : `<span class="badge badge-custom">自訂</span>`;
+  const typeBadge = !tab.isSystem ? `<span class="badge badge-ext">外連</span>` : '';
+  const offBadge = !tab.enabled ? `<span class="badge badge-off">停用</span>` : '';
+
+  const delBtn = !tab.isSystem
+    ? `<button class="icon-btn icon-btn-del" onclick="openDeleteModal(event,${tab.id})" title="刪除">✕</button>`
+    : '';
+
+  const subtext = tab.isSystem
+    ? `<span class="tab-url-hint">內部頁面</span>`
+    : `<span class="tab-url-hint">${tab.externalUrl || '⚠ 尚未設定網址'}</span>`;
+
+  div.innerHTML = `
+    <span class="drag-handle">⠿</span>
+    <div class="tab-icon-box">${iconHTML(tab.iconKey, tab.customIcon)}</div>
+    <div style="flex:1;min-width:0;">
+      <div class="tab-name">${tab.name}</div>
+      ${subtext}
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;flex-shrink:0;">
+      ${kindBadge}${typeBadge}${offBadge}
+    </div>
+    <button class="toggle${tab.enabled ? ' on' : ''}" onclick="toggleTab(event,${tab.id})"></button>
+    <button class="icon-btn" onclick="selectTab(${tab.id})" title="編輯">✏</button>
+    ${delBtn}
+  `;
+  return div;
+}
+
+// ─── Toggle ────────────────────────────────────────────────────────────────
+function toggleTab(e, id) {
+  e.stopPropagation();
+  const tab = allTabs().find(t => t.id === id);
+  if (!tab) return;
+  if (tab.enabled && enabledCount() <= 1) { showToast('⚠ 至少須保留 1 個啟用的選單'); return; }
+  if (!tab.enabled && enabledCount() >= 5) { showToast('⚠ 最多同時啟用 5 個選單，請先停用其他項目'); return; }
+  tab.enabled = !tab.enabled;
+  render();
+}
+
+// ─── Select & Edit ─────────────────────────────────────────────────────────
+function selectTab(id) {
+  selectedId = id;
+  const tab = allTabs().find(t => t.id === id);
+  if (!tab) return;
+
+  document.getElementById('editSideTitle').textContent = `編輯「${tab.name}」`;
+  document.getElementById('editSideSubtitle').textContent = tab.isSystem ? '系統選單' : '自訂選單';
+
+  let iconPreviewHTML;
+  let iconBadge = '';
+  let showReset = false;
+  if (tab.customIcon) {
+    iconPreviewHTML = `<img src="${tab.customIcon}" style="width:38px;height:38px;object-fit:cover;border-radius:8px;">`;
+    if (tab.isSystem) { iconBadge = '已覆蓋預設圖示'; showReset = true; }
+  } else if (tab.isSystem) {
+    iconPreviewHTML = `<span style="width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#555;">${ICONS[tab.iconKey]}</span>`;
+    iconBadge = '使用預設圖示';
+  } else {
+    iconPreviewHTML = `<span style="font-size:20px;color:#DDD;">📤</span>`;
+  }
+  const mustUpload = !tab.isSystem && !tab.customIcon;
+
+  const linkSection = tab.isSystem ? `
+    <div class="form-group">
+      <label class="form-label">連結頁面</label>
+      <select class="form-input" id="editPage">
+        ${['home','membercard','memberzone','shop','voucher','pointcard'].map(v =>
+          `<option value="${v}" ${tab.internalPage===v?'selected':''}>${{home:'首頁',membercard:'會員卡',memberzone:'會員專區',shop:'商店',voucher:'票券',pointcard:'集點卡'}[v]}</option>`
+        ).join('')}
+      </select>
+    </div>` : `
+    <div class="form-group">
+      <label class="form-label">外部網址 <span class="req">*</span></label>
+      <input type="url" class="form-input" id="editUrl" placeholder="https://example.com" value="${tab.externalUrl||''}" oninput="validateUrl()">
+      <div class="err-msg" id="urlErr">請輸入有效的 https:// 網址</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">開啟方式 <span class="req">*</span></label>
+      <select class="form-input" id="editOpenMethod">
+        <option value="webview" ${!tab.openMethod||tab.openMethod==='webview'?'selected':''}>在 App 內開啟（WebView）</option>
+        <option value="browser" ${tab.openMethod==='browser'?'selected':''}>跳出至 LINE 瀏覽器</option>
+      </select>
+    </div>`;
+
+  document.getElementById('editSideBody').innerHTML = `
+    <div class="form-group">
+      <label class="form-label">顯示名稱 <span class="req">*</span></label>
+      <input type="text" class="form-input" id="editName" placeholder="最多 4 個中文字" maxlength="8" value="${tab.name}" oninput="countName()">
+      <div class="char-count" id="nameCount"></div>
+      <div class="err-msg" id="nameErr">名稱不能為空</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">選單圖示
+        ${iconBadge ? `<span class="icon-badge">（${iconBadge}）</span>` : ''}
+      </label>
+      <div class="icon-upload-zone" onclick="document.getElementById('iconFile_${id}').click()">
+        <div class="icon-upload-row">
+          <div class="icon-preview" id="iconPrev">${iconPreviewHTML}</div>
+          <div>
+            <div class="icon-upload-text">${tab.customIcon ? '點擊更換圖示' : '點擊上傳圖示'}</div>
+            <div class="icon-upload-spec">PNG / SVG・48×48px・最大 200KB</div>
+            <div class="icon-upload-warn" id="uploadWarn" style="${mustUpload?'display:block':''}">⚠ 自訂選單須上傳圖示</div>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="iconFile_${id}" accept="image/png,image/svg+xml,image/jpeg" onchange="handleIconUpload(event,${id})">
+      ${showReset ? `<button class="reset-btn" onclick="resetIcon()">↩ 恢復預設圖示</button>` : ''}
+    </div>
+
+    ${linkSection}
+
+    <div class="edit-actions">
+      <button class="btn btn-ghost" style="flex:1" onclick="cancelEdit()">取消</button>
+      <button class="btn btn-green" style="flex:1" onclick="saveTab(${id})">儲存</button>
+    </div>
+  `;
+
+  countName();
+  render();
+}
+
+function cancelEdit() {
+  selectedId = null;
+  document.getElementById('editSideTitle').textContent = '選單設定';
+  document.getElementById('editSideSubtitle').textContent = '';
+  document.getElementById('editSideBody').innerHTML = `<div class="empty-edit-state"><div style="font-size:24px;margin-bottom:8px;">👈</div>點選左側選單項目開始編輯</div>`;
+  render();
+}
+
+function countName() {
+  const el = document.getElementById('editName');
+  const c = document.getElementById('nameCount');
+  if (!el||!c) return;
+  const len = [...el.value].length;
+  c.textContent = `${len} / 4 字`;
+  c.className = `char-count${len>4?' warn':''}`;
+}
+
+function validateUrl() {
+  const url = document.getElementById('editUrl')?.value||'';
+  const bad = url && !url.startsWith('https://');
+  document.getElementById('urlErr')?.classList.toggle('show', bad);
+  document.getElementById('editUrl')?.classList.toggle('err', bad);
+}
+
+function handleIconUpload(event, tabId) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 200*1024) { showToast('⚠ 圖片超過 200KB，請重新選擇'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const tab = allTabs().find(t => t.id === tabId);
+    if (tab) { tab.customIcon = e.target.result; selectTab(tabId); render(); }
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetIcon() {
+  if (!selectedId) return;
+  const tab = allTabs().find(t => t.id === selectedId);
+  if (tab && tab.isSystem) { tab.customIcon = null; selectTab(selectedId); showToast('↩ 已恢復預設圖示'); render(); }
+}
+
+function saveTab(id) {
+  const tab = allTabs().find(t => t.id === id);
+  if (!tab) return;
+  const name = document.getElementById('editName')?.value.trim();
+  if (!name) { document.getElementById('nameErr')?.classList.add('show'); return; }
+  document.getElementById('nameErr')?.classList.remove('show');
+  if (!tab.isSystem && !tab.customIcon) { showToast('⚠ 請先上傳選單圖示'); return; }
+  if (!tab.isSystem) {
+    const url = document.getElementById('editUrl')?.value||'';
+    if (!url.startsWith('https://')) { showToast('⚠ 外部連結必須為 https:// 開頭'); return; }
+    tab.externalUrl = url;
+    tab.openMethod = document.getElementById('editOpenMethod')?.value||'webview';
+  } else {
+    tab.internalPage = document.getElementById('editPage')?.value||tab.internalPage;
+  }
+  tab.name = name;
+  showToast('✓ 已儲存至草稿');
+  selectTab(id);
+  render();
+}
+
+// ─── Add Custom ────────────────────────────────────────────────────────────
+function openAddModal() {
+  if (customTabs.length >= 5) return;
+  document.getElementById('newTabName').value = '';
+  document.getElementById('newTabNameErr').classList.remove('show');
+  document.getElementById('addModal').classList.add('show');
+  setTimeout(() => document.getElementById('newTabName').focus(), 80);
+}
+function closeAddModal() { document.getElementById('addModal').classList.remove('show'); }
+function confirmAdd() {
+  const name = document.getElementById('newTabName').value.trim();
+  if (!name) { document.getElementById('newTabNameErr').classList.add('show'); return; }
+  const t = { id: nextId++, name, isSystem:false, iconKey:'link', enabled: enabledCount()<5, linkType:'external', externalUrl:'', openMethod:'webview', customIcon:null };
+  customTabs.push(t);
+  closeAddModal();
+  render();
+  selectTab(t.id);
+  showToast(`已新增「${name}」，請繼續設定圖示與連結`);
+}
+
+// ─── Delete ────────────────────────────────────────────────────────────────
+function openDeleteModal(e, id) {
+  e.stopPropagation();
+  const tab = customTabs.find(t => t.id === id);
+  if (!tab) return;
+  pendingDeleteId = id;
+  document.getElementById('deleteModalDesc').textContent = `確定要刪除「${tab.name}」嗎？此操作無法復原。`;
+  document.getElementById('deleteModal').classList.add('show');
+}
+function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); pendingDeleteId=null; }
+function confirmDelete() {
+  if (!pendingDeleteId) return;
+  const tab = customTabs.find(t => t.id === pendingDeleteId);
+  customTabs = customTabs.filter(t => t.id !== pendingDeleteId);
+  if (selectedId === pendingDeleteId) cancelEdit();
+  closeDeleteModal();
+  render();
+  showToast(`已刪除「${tab?.name||'選單'}」`);
+}
+
+// ─── Phone Preview ─────────────────────────────────────────────────────────
+function renderPhone() {
+  const bar = document.getElementById('phoneTabBar');
+  bar.innerHTML = '';
+  const active = enabledTabs();
+  const midIdx = Math.floor(active.length / 2);
+  active.forEach((tab, i) => {
+    const div = document.createElement('div');
+    div.className = `phone-tab${i === midIdx ? ' act' : ''}`;
+    const ic = tab.customIcon
+      ? `<img src="${tab.customIcon}" style="width:17px;height:17px;object-fit:cover;border-radius:3px;">`
+      : (ICONS[tab.iconKey] || ICONS.link);
+    div.innerHTML = `<div class="phone-tab-svg">${ic}</div><div class="phone-tab-lbl">${tab.name}</div>`;
+    bar.appendChild(div);
+  });
+  const ec = active.length;
+  document.getElementById('enabledCounter').innerHTML = `<strong>${ec}</strong> / 5 個選單啟用中`;
+}
+
+// ─── Color Picker ──────────────────────────────────────────────────────────
+(function initColorPicker() {
+  const canvas = document.getElementById('spectrumCanvas');
+  const ctx = canvas.getContext('2d');
+  const hueSlider = document.getElementById('hueSlider');
+  const swatch = document.getElementById('colorSwatch');
+  const hexInput = document.getElementById('colorHexInput');
+  let hue = 0, pickX = 10, pickY = canvas.height - 10;
+
+  function drawSpectrum() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const gradH = ctx.createLinearGradient(0,0,canvas.width,0);
+    gradH.addColorStop(0,'#fff');
+    gradH.addColorStop(1,`hsl(${hue},100%,50%)`);
+    ctx.fillStyle = gradH;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    const gradV = ctx.createLinearGradient(0,0,0,canvas.height);
+    gradV.addColorStop(0,'rgba(0,0,0,0)');
+    gradV.addColorStop(1,'#000');
+    ctx.fillStyle = gradV;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.beginPath();
+    ctx.arc(pickX,pickY,6,0,2*Math.PI);
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=2;
+    ctx.stroke();
+  }
+
+  function pickColor(x,y) {
+    pickX = Math.max(0,Math.min(x,canvas.width));
+    pickY = Math.max(0,Math.min(y,canvas.height));
+    const px = ctx.getImageData(pickX,pickY,1,1).data;
+    const hex = '#'+[px[0],px[1],px[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
+    swatch.style.background = hex;
+    hexInput.value = '# '+hex.slice(1).toUpperCase();
+    drawSpectrum();
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    const r = canvas.getBoundingClientRect();
+    const sx = canvas.width / r.width, sy = canvas.height / r.height;
+    const move = ev => pickColor((ev.clientX-r.left)*sx,(ev.clientY-r.top)*sy);
+    move(e);
+    const up = () => { window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); };
+    window.addEventListener('mousemove',move);
+    window.addEventListener('mouseup',up);
+  });
+
+  hueSlider.addEventListener('input', () => {
+    hue = parseInt(hueSlider.value);
+    drawSpectrum();
+    pickColor(pickX,pickY);
+  });
+
+  hexInput.addEventListener('change', () => {
+    const v = hexInput.value.replace(/[^0-9a-fA-F]/g,'');
+    if (v.length===6) { swatch.style.background='#'+v; hexInput.value='# '+v.toUpperCase(); }
+  });
+
+  drawSpectrum();
+})();
+
+// ─── Publish / Draft ───────────────────────────────────────────────────────
+function saveDraft() { showToast('草稿已儲存'); }
+function openPublishModal() { document.getElementById('publishModal').classList.add('show'); }
+function closePublishModal() { document.getElementById('publishModal').classList.remove('show'); }
+function confirmPublish() { closePublishModal(); showToast('已發布！前台將於 30 秒內更新'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
